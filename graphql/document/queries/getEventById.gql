@@ -1,0 +1,38 @@
+query GetEventById($getEventByIdId: String!) {
+  getEventById(id: $getEventByIdId) {
+    createdAt
+    description
+    eventFormat
+    eventType {
+      id
+      name
+    }
+    id
+    img
+    isTemplate
+    name
+    rental {
+      id
+      rentalEndTime
+      rentalStartTime
+      totalPrice
+      user {
+        avatar
+        createdAt
+        dob
+        email
+        firstName
+        gender
+        id
+        lastName
+        phoneNumber
+        role {
+          id
+          name
+        }
+        roleId
+        updatedAt
+      }
+    }
+  }
+}

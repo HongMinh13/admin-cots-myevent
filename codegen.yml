@@ -1,0 +1,18 @@
+overwrite: true
+schema: http://77.237.233.209:1234/client
+documents: "graphql/**/*.gql"
+generates:
+  graphql/generated/index.tsx:
+    plugins:
+      - typescript
+      - typescript-operations
+      # - typescript-react-query
+      - typescript-react-apollo
+    config:
+      fetcher: graphql-request
+      withHOC: false
+      withHooks: true
+      withComponent: false
+      useIndexSignature: true
+      apolloReactHooksImportFrom: "@apollo/client"
+
