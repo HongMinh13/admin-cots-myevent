@@ -1,0 +1,18 @@
+query GetHumanResourcesAvailable($input: GetServicesRequest!) {
+  getHumanResourcesAvailable(input: $input) {
+    items {
+      availableQuantity
+      hourlySalary
+      id
+      name
+      quantity
+    }
+    meta {
+      currentPage
+      itemCount
+      itemsPerPage
+      totalItems
+      totalPages
+    }
+  }
+}
