@@ -16,33 +16,38 @@ export function MainNav({
   const routes = [
 		{
 			href: `/users`,
-			label: 'Users',
+			label: 'Người dùng',
 			active: pathname === `/users`,
 		},
 		{
-			href: `/credit`,
-			label: 'Credit',
-			active: pathname === `/credit`,
+			href: `/event`,
+			label: 'Sự kiện',
+			active: pathname === `/event`,
 		},
 		{
-			href: `/lucky-draw`,
-			label: 'Lucky draw',
-			active: pathname === `/lucky-draw`,
+			href: `/devices`,
+			label: 'Thiết bị',
+			active: pathname === `/devices`,
 		},
 		{
-			href: `/films`,
-			label: 'Films',
-			active: pathname === `/films`,
+			href: `/humanResources`,
+			label: 'Nhân sự',
+			active: pathname === `/humanResources`,
 		},
 		{
-			href: `/drops`,
-			label: 'Drops',
-			active: pathname === `/drops`,
+			href: `/locations`,
+			label: 'Địa điểm',
+			active: pathname === `/locations`,
 		},
 		{
-			href: `/settings`,
-			label: 'Settings',
-			active: pathname === `/settings`,
+			href: `/contracts`,
+			label: 'Hợp đồng',
+			active: pathname === `/contracts`,
+		},
+		{
+			href: `/statistic`,
+			label: 'Thống kê',
+			active: pathname === `/statistic`,
 		},
 	];
 
