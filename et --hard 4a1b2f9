@@ -1,0 +1,10 @@
+[33mf7e5abc[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeat/event-admin[m[33m, [m[1;31morigin/feat/event-admin[m[33m)[m HEAD@{0}: checkout: moving from main to feat/event-admin
+[33md52058c[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{1}: checkout: moving from feat/event-admin to main
+[33mf7e5abc[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeat/event-admin[m[33m, [m[1;31morigin/feat/event-admin[m[33m)[m HEAD@{2}: commit: feat(event-admin):handle ui for event of admin site
+[33md52058c[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{3}: checkout: moving from main to feat/event-admin
+[33md52058c[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{4}: pull: Fast-forward
+[33mb086d0f[m HEAD@{5}: checkout: moving from init-admin-code to main
+[33m7f082d2[m[33m ([m[1;31morigin/init-admin-code[m[33m, [m[1;32minit-admin-code[m[33m)[m HEAD@{6}: reset: moving to HEAD
+[33m7f082d2[m[33m ([m[1;31morigin/init-admin-code[m[33m, [m[1;32minit-admin-code[m[33m)[m HEAD@{7}: commit: build(init-admin-base-code): initial source code for frontend-admin
+[33mb086d0f[m HEAD@{8}: checkout: moving from main to init-admin-code
+[33mb086d0f[m HEAD@{9}: commit (initial): admin

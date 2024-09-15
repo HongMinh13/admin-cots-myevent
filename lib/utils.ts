@@ -66,14 +66,14 @@ export function formatErrorMsg(error: string): string {
 }
 
 export const getToken = () => {
-	if (localStorage) {
+	if (typeof window !== 'undefined' && localStorage) {
 		return localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
 	}
 };
 
 export const setToken = (accessToken: string) => {
 	if (localStorage) {
-		localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, accessToken);
+		localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, `Bearer ${accessToken}`);
 	}
 };
 

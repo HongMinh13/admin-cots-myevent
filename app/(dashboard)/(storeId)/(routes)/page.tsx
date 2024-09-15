@@ -38,7 +38,7 @@ const DashboardPage = async () => {
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <Heading title="Dashboard" description="Overview of Filmatron" />
+        <Heading title="Dashboard" description="My Event" />
         <Separator />
         <div className="grid gap-4 grid-cols-3">
           <Card>

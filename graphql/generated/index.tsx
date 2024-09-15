@@ -1850,3 +1850,244 @@ export type GetRolesQueryHookResult = ReturnType<typeof useGetRolesQuery>;
 export type GetRolesLazyQueryHookResult = ReturnType<typeof useGetRolesLazyQuery>;
 export type GetRolesSuspenseQueryHookResult = ReturnType<typeof useGetRolesSuspenseQuery>;
 export type GetRolesQueryResult = Apollo.QueryResult<GetRolesQuery, GetRolesQueryVariables>;
+
+export type CreateTimelineRequest = {
+  description: Scalars["String"]["input"];
+  timeStart: Scalars["DateTime"]["input"];
+};
+export type CreateEventTemplateRequest = {
+  description: Scalars["String"]["input"];
+  detail: Scalars["String"]["input"];
+  devices?: InputMaybe<Array<CreateServiceRentalRequest>>;
+  eventFormat?: InputMaybe<Scalars["Boolean"]["input"]>;
+  eventType?: InputMaybe<CreateEventTypeRequest>;
+  eventTypeId?: InputMaybe<Scalars["String"]["input"]>;
+  humanResources?: InputMaybe<Array<CreateServiceRentalRequest>>;
+  img?: InputMaybe<Scalars["String"]["input"]>;
+  name: Scalars["String"]["input"];
+  timeline?: InputMaybe<Array<CreateTimelineRequest>>;
+}; 
+export type CreateEventTemplateMutationVariables = Exact<{
+  input: CreateEventTemplateRequest;
+}>;
+export const CreateEventTemplateDocument = gql`
+  mutation CreateEventTemplate($input: CreateEventTemplateRequest!) {
+    createEventTemplate(input: $input) {
+      message
+      success
+    }
+  }
+`;
+export type CreateEventTemplateMutation = {
+  __typename?: "Mutation";
+  createEventTemplate: { __typename?: "ResponseMessageBase"; message: string; success: boolean };
+};
+export function useCreateEventTemplateMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<CreateEventTemplateMutation, CreateEventTemplateMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useMutation<CreateEventTemplateMutation, CreateEventTemplateMutationVariables>(CreateEventTemplateDocument, options);
+}
+export type CreateEventTemplateMutationHookResult = ReturnType<typeof useCreateEventTemplateMutation>;
+export type CreateEventTemplateMutationResult = Apollo.MutationResult<CreateEventTemplateMutation>;
+export type CreateEventTemplateMutationOptions = Apollo.BaseMutationOptions<CreateEventTemplateMutation, CreateEventTemplateMutationVariables>;
+
+export const GetDevicesDocument = gql`
+  query GetDevices($input: QueryFilterDto!) {
+    getDevices(input: $input) {
+      items {
+        availableQuantity
+        description
+        hourlyRentalFee
+        id
+        img
+        name
+        quantity
+        createdAt
+      }
+      meta {
+        currentPage
+        itemCount
+        itemsPerPage
+        totalItems
+        totalPages
+      }
+    }
+  }
+`;
+export type GetDevicesQuery = {
+  __typename?: "Query";
+  getDevices: {
+    __typename?: "DevicesData";
+    items: Array<{
+      __typename?: "DeviceData";
+      availableQuantity?: number | null;
+      description: string;
+      hourlyRentalFee: number;
+      id: string;
+      img: string;
+      name: string;
+      quantity: number;
+      createdAt: any;
+    }>;
+    meta: {
+      __typename?: "MetaPaginationInterface";
+      currentPage: number;
+      itemCount: number;
+      itemsPerPage: number;
+      totalItems: number;
+      totalPages: number;
+    };
+  };
+};
+export type GetDevicesQueryVariables = Exact<{
+  input: QueryFilterDto;
+}>;
+export function useGetDevicesQuery(
+  baseOptions: ApolloReactHooks.QueryHookOptions<GetDevicesQuery, GetDevicesQueryVariables> &
+    ({ variables: GetDevicesQueryVariables; skip?: boolean } | { skip: boolean })
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useQuery<GetDevicesQuery, GetDevicesQueryVariables>(GetDevicesDocument, options);
+}
+export function useGetDevicesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetDevicesQuery, GetDevicesQueryVariables>) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useLazyQuery<GetDevicesQuery, GetDevicesQueryVariables>(GetDevicesDocument, options);
+}
+export function useGetDevicesSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<GetDevicesQuery, GetDevicesQueryVariables>) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useSuspenseQuery<GetDevicesQuery, GetDevicesQueryVariables>(GetDevicesDocument, options);
+}
+export type GetDevicesQueryHookResult = ReturnType<typeof useGetDevicesQuery>;
+export type GetDevicesLazyQueryHookResult = ReturnType<typeof useGetDevicesLazyQuery>;
+export type GetDevicesSuspenseQueryHookResult = ReturnType<typeof useGetDevicesSuspenseQuery>;
+export type GetDevicesQueryResult = Apollo.QueryResult<GetDevicesQuery, GetDevicesQueryVariables>;
+
+export type DeleteEventTemplateMutationVariables = Exact<{
+  deleteEventTemplateId: Scalars['String']['input'];
+}>;
+
+export const DeleteEventTemplateDocument = gql`
+    mutation DeleteEventTemplate($deleteEventTemplateId: String!) {
+  deleteEventTemplate(id: $deleteEventTemplateId) {
+    message
+    success
+  }
+}
+    `;
+export type DeleteEventTemplateMutation = { __typename?: 'Mutation', deleteEventTemplate: { __typename?: 'ResponseMessageBase', message: string, success: boolean } };
+
+export function useDeleteEventTemplateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteEventTemplateMutation, DeleteEventTemplateMutationVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useMutation<DeleteEventTemplateMutation, DeleteEventTemplateMutationVariables>(DeleteEventTemplateDocument, options);
+}
+export type DeleteEventTemplateMutationHookResult = ReturnType<typeof useDeleteEventTemplateMutation>;
+export type DeleteEventTemplateMutationResult = Apollo.MutationResult<DeleteEventTemplateMutation>;
+export type DeleteEventTemplateMutationOptions = Apollo.BaseMutationOptions<DeleteEventTemplateMutation, DeleteEventTemplateMutationVariables>;
+
+export type GetEventsTemplateQueryVariables = Exact<{
+  input: QueryFilterDto;
+}>;
+
+export const GetEventsTemplateDocument = gql`
+    query GetEventsTemplate($input: QueryFilterDto!) {
+  getEventsTemplate(input: $input) {
+    items {
+      createdAt
+      description
+      detail
+      eventFormat
+      eventType {
+        id
+        name
+      }
+      id
+      img
+      isTemplate
+      name
+      rental {
+        customLocation
+        devices {
+          availableQuantity
+          createdAt
+          description
+          hourlyRentalFee
+          id
+          img
+          name
+          quantity
+        }
+        event {
+          createdAt
+          description
+          detail
+          eventFormat
+          id
+          img
+          isTemplate
+          name
+        }
+        humanResources {
+          availableQuantity
+          createdAt
+          description
+          hourlySalary
+          id
+          img
+          name
+          quantity
+        }
+        id
+        locations {
+          address
+          createdAt
+          description
+          hourlyRentalFee
+          id
+          img
+          name
+        }
+        rentalEndTime
+        rentalStartTime
+        timelines {
+          description
+          id
+          startTime
+        }
+        totalPrice
+        user {
+          avatar
+          createdAt
+          dob
+          email
+          firstName
+          gender
+          id
+          lastName
+          phoneNumber
+          role {
+            id
+            name
+          }
+          roleId
+          updatedAt
+        }
+      }
+    }
+    meta {
+      currentPage
+      itemCount
+      itemsPerPage
+      totalItems
+      totalPages
+    }
+  }
+}
+    `;
+
+export type GetEventsTemplateQuery = { __typename?: 'Query', getEventsTemplate: { __typename?: 'EventsData', items: Array<{ __typename?: 'EventData', createdAt: any, description: string, detail: string, eventFormat: boolean, id: string, img?: string | null, isTemplate: boolean, name: string, eventType?: { __typename?: 'EventTypeData', id: string, name: string } | null, rental?: { __typename?: 'RentalData', customLocation?: string | null, id: string, rentalEndTime?: any | null, rentalStartTime?: any | null, totalPrice: number, devices?: Array<{ __typename?: 'DeviceData', availableQuantity?: number | null, createdAt: any, description: string, hourlyRentalFee: number, id: string, img: string, name: string, quantity: number }> | null, event?: { __typename?: 'EventData', createdAt: any, description: string, detail: string, eventFormat: boolean, id: string, img?: string | null, isTemplate: boolean, name: string } | null, humanResources?: Array<{ __typename?: 'HumanResourceData', availableQuantity?: number | null, createdAt: any, description: string, hourlySalary: number, id: string, img?: string | null, name: string, quantity: number }> | null, locations?: Array<{ __typename?: 'LocationData', address: string, createdAt: any, description: string, hourlyRentalFee: number, id: string, img: string, name: string }> | null, timelines?: Array<{ __typename?: 'TimelineData', description: string, id: string, startTime: any }> | null, user: { __typename?: 'UserData', avatar?: string | null, createdAt?: any | null, dob?: any | null, email: string, firstName: string, gender?: boolean | null, id: string, lastName: string, phoneNumber?: string | null, roleId: string, updatedAt?: any | null, role?: { __typename?: 'RoleData', id: string, name: string } | null } } | null }>, meta: { __typename?: 'MetaPaginationInterface', currentPage: number, itemCount: number, itemsPerPage: number, totalItems: number, totalPages: number } } };
+
+export function useGetEventsTemplateQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetEventsTemplateQuery, GetEventsTemplateQueryVariables> & ({ variables: GetEventsTemplateQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useQuery<GetEventsTemplateQuery, GetEventsTemplateQueryVariables>(GetEventsTemplateDocument, options);
+}
