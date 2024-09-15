@@ -10,39 +10,39 @@ import { Separator } from "@/components/ui/separator";
 import { ApiList } from "@/components/ui/api-list";
 
 import { columns } from './columns';
-import { EventData } from "@/graphql/generated";
+import { HumanResourceData } from "@/graphql/generated";
 
-interface EventsClientProps {
-	data: EventData[];
+interface HumanResourcesClientProps {
+	data: HumanResourceData[];
 	loading: boolean;
 }
 
-export const EventsClient: React.FC<EventsClientProps> = ({
+export const HumanResourcesClient: React.FC<HumanResourcesClientProps> = ({
   data,
   loading
 }) => {
   const params = useParams();
   const router = useRouter();
 
-	const events = data;
+	const humanResources = data;
 
 
   return (
 		<>
 			<div className="flex items-center justify-between">
 				<Heading
-					title={`Sự kiện (${events.length})`}
+					title={`Nhân sự (${humanResources.length})`}
 					description=""
 				/>
-				<Button onClick={() => router.push(`/event/new`)}>
+				<Button onClick={() => router.push(`/humanResources/new`)}>
 					<Plus className="mr-2 h-4 w-4" /> Thêm mới
 				</Button>
 			</div>
 			<Separator />
-			{ loading ? <Loader /> : <DataTable searchKey="description" columns={columns} data={events} />}
+			{ loading ? <Loader /> : <DataTable searchKey="description" columns={columns} data={humanResources} />}
 
 			<Separator />
-			<ApiList entityName="events" entityIdName="eventId" />
+			<ApiList entityName="humanResources" entityIdName="eventId" />
 		</>
 	);
 };

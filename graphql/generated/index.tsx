@@ -2091,3 +2091,258 @@ export function useGetEventsTemplateQuery(baseOptions: ApolloReactHooks.QueryHoo
   const options = {...defaultOptions, ...baseOptions}
   return ApolloReactHooks.useQuery<GetEventsTemplateQuery, GetEventsTemplateQueryVariables>(GetEventsTemplateDocument, options);
 }
+
+export const GetEventTypesDocument = gql`
+    query GetEventTypes($input: QueryFilterDto!) {
+  getEventTypes(input: $input) {
+    items {
+      id
+      name
+    }
+    meta {
+      currentPage
+      itemCount
+      itemsPerPage
+      totalItems
+      totalPages
+    }
+  }
+}
+    `;
+export type GetEventTypesQueryVariables = Exact<{
+  input: QueryFilterDto;
+}>;
+
+
+export type GetEventTypesQuery = { __typename?: 'Query', getEventTypes: { __typename?: 'EventTypesData', items: Array<{ __typename?: 'EventTypeData', id: string, name: string }>, meta: { __typename?: 'MetaPaginationInterface', currentPage: number, itemCount: number, itemsPerPage: number, totalItems: number, totalPages: number } } };
+export function useGetEventTypesQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetEventTypesQuery, GetEventTypesQueryVariables> & ({ variables: GetEventTypesQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useQuery<GetEventTypesQuery, GetEventTypesQueryVariables>(GetEventTypesDocument, options);
+}
+
+export const GetHumanResourcesDocument = gql`
+    query GetHumanResources($input: QueryFilterDto!) {
+  getHumanResources(input: $input) {
+    items {
+      availableQuantity
+      createdAt
+      description
+      hourlySalary
+      id
+      img
+      name
+      quantity
+    }
+    meta {
+      currentPage
+      itemCount
+      itemsPerPage
+      totalItems
+      totalPages
+    }
+  }
+}
+    `;
+export type GetHumanResourcesQueryVariables = Exact<{
+  input: QueryFilterDto;
+}>;
+export type GetHumanResourcesQuery = { __typename?: 'Query', getHumanResources: { __typename?: 'HumanResourcesData', items: Array<{ __typename?: 'HumanResourceData', availableQuantity?: number | null, createdAt: any, description: string, hourlySalary: number, id: string, img?: string | null, name: string, quantity: number }>, meta: { __typename?: 'MetaPaginationInterface', currentPage: number, itemCount: number, itemsPerPage: number, totalItems: number, totalPages: number } } };
+export function useGetHumanResourcesQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetHumanResourcesQuery, GetHumanResourcesQueryVariables> & ({ variables: GetHumanResourcesQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useQuery<GetHumanResourcesQuery, GetHumanResourcesQueryVariables>(GetHumanResourcesDocument, options);
+}
+export type UpsertTimelineRequest = {
+  description: Scalars['String']['input'];
+  id?: InputMaybe<Scalars['String']['input']>;
+  timeStart: Scalars['DateTime']['input'];
+};
+
+export type UpdateEventTemplateRequest = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  detail?: InputMaybe<Scalars['String']['input']>;
+  devices?: InputMaybe<Array<CreateServiceRentalRequest>>;
+  eventFormat?: InputMaybe<Scalars['Boolean']['input']>;
+  eventType?: InputMaybe<CreateEventTypeRequest>;
+  eventTypeId?: InputMaybe<Scalars['String']['input']>;
+  humanResources?: InputMaybe<Array<CreateServiceRentalRequest>>;
+  id: Scalars['ID']['input'];
+  img?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  timeline?: InputMaybe<Array<UpsertTimelineRequest>>;
+};
+export type UpdateEventTemplateMutationVariables = Exact<{
+  input: UpdateEventTemplateRequest;
+}>;
+export type UpdateHumanResourcesRequest = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  hourlySalary?: InputMaybe<Scalars['Float']['input']>;
+  id: Scalars['ID']['input'];
+  img?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  quantity?: InputMaybe<Scalars['Float']['input']>;
+};
+
+export type UpdateEventTemplateMutation = { __typename?: 'Mutation', updateEventTemplate: { __typename?: 'ResponseMessageBase', message: string, success: boolean } };
+
+export type UpdateHumanResourceMutationVariables = Exact<{
+  input: UpdateHumanResourcesRequest;
+}>;
+
+export const UpdateEventTemplateDocument = gql`
+    mutation UpdateEventTemplate($input: UpdateEventTemplateRequest!) {
+  updateEventTemplate(input: $input) {
+    message
+    success
+  }
+}
+    `;
+export function useUpdateEventTemplateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateEventTemplateMutation, UpdateEventTemplateMutationVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useMutation<UpdateEventTemplateMutation, UpdateEventTemplateMutationVariables>(UpdateEventTemplateDocument, options);
+}
+export type UpdateEventTemplateMutationHookResult = ReturnType<typeof useUpdateEventTemplateMutation>;
+export type UpdateEventTemplateMutationResult = Apollo.MutationResult<UpdateEventTemplateMutation>;
+export type UpdateEventTemplateMutationOptions = Apollo.BaseMutationOptions<UpdateEventTemplateMutation, UpdateEventTemplateMutationVariables>;
+
+export type DeleteDeviceMutationVariables = Exact<{
+  deleteDeviceId: Scalars['String']['input'];
+}>;
+
+
+export const DeleteDeviceDocument = gql`
+    mutation DeleteDevice($deleteDeviceId: String!) {
+  deleteDevice(id: $deleteDeviceId) {
+    message
+    success
+  }
+}
+    `;
+export type DeleteDeviceMutation = { __typename?: 'Mutation', deleteDevice: { __typename?: 'ResponseMessageBase', message: string, success: boolean } };
+
+export function useDeleteDeviceMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteDeviceMutation, DeleteDeviceMutationVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useMutation<DeleteDeviceMutation, DeleteDeviceMutationVariables>(DeleteDeviceDocument, options);
+}
+export type DeleteDeviceMutationHookResult = ReturnType<typeof useDeleteDeviceMutation>;
+export type DeleteDeviceMutationResult = Apollo.MutationResult<DeleteDeviceMutation>;
+export type DeleteDeviceMutationOptions = Apollo.BaseMutationOptions<DeleteDeviceMutation, DeleteDeviceMutationVariables>;
+
+
+export type GetDeviceByIdQueryVariables = Exact<{
+  getDeviceByIdId: Scalars['String']['input'];
+}>;
+
+export type GetDeviceByIdQuery = { __typename?: 'Query', getDeviceById: { __typename?: 'DeviceData', availableQuantity?: number | null, createdAt: any, description: string, hourlyRentalFee: number, id: string, img: string, name: string, quantity: number } };
+export const GetDeviceByIdDocument = gql`
+    query GetDeviceById($getDeviceByIdId: String!) {
+  getDeviceById(id: $getDeviceByIdId) {
+    availableQuantity
+    createdAt
+    description
+    hourlyRentalFee
+    id
+    img
+    name
+    quantity
+  }
+}
+    `;
+export function useGetDeviceByIdQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetDeviceByIdQuery, GetDeviceByIdQueryVariables> & ({ variables: GetDeviceByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useQuery<GetDeviceByIdQuery, GetDeviceByIdQueryVariables>(GetDeviceByIdDocument, options);
+}
+
+export type UpdateDeviceRequest = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  hourlyRentalFee?: InputMaybe<Scalars['Float']['input']>;
+  id: Scalars['ID']['input'];
+  img?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  quantity?: InputMaybe<Scalars['Float']['input']>;
+};
+export type UpdateDeviceMutationVariables = Exact<{
+  input: UpdateDeviceRequest;
+}>;
+
+export const UpdateDeviceDocument = gql`
+    mutation UpdateDevice($input: UpdateDeviceRequest!) {
+  updateDevice(input: $input) {
+    message
+    success
+  }
+}
+    `;
+export type UpdateDeviceMutation = { __typename?: 'Mutation', updateDevice: { __typename?: 'ResponseMessageBase', message: string, success: boolean } };
+
+export function useUpdateDeviceMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateDeviceMutation, UpdateDeviceMutationVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useMutation<UpdateDeviceMutation, UpdateDeviceMutationVariables>(UpdateDeviceDocument, options);
+}
+export type UpdateDeviceMutationHookResult = ReturnType<typeof useUpdateDeviceMutation>;
+export type UpdateDeviceMutationResult = Apollo.MutationResult<UpdateDeviceMutation>;
+export type UpdateDeviceMutationOptions = Apollo.BaseMutationOptions<UpdateDeviceMutation, UpdateDeviceMutationVariables>;
+
+export type DeleteHumanResourceMutationVariables = Exact<{
+  deleteHumanResourceId: Scalars['String']['input'];
+}>;
+
+
+export type DeleteHumanResourceMutation = { __typename?: 'Mutation', deleteHumanResource: { __typename?: 'ResponseMessageBase', message: string, success: boolean } };
+
+export const DeleteHumanResourceDocument = gql`
+    mutation DeleteHumanResource($deleteHumanResourceId: String!) {
+  deleteHumanResource(id: $deleteHumanResourceId) {
+    message
+    success
+  }
+}
+    `;
+export function useDeleteHumanResourceMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteHumanResourceMutation, DeleteHumanResourceMutationVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useMutation<DeleteHumanResourceMutation, DeleteHumanResourceMutationVariables>(DeleteHumanResourceDocument, options);
+}
+export type DeleteHumanResourceMutationHookResult = ReturnType<typeof useDeleteHumanResourceMutation>;
+export type DeleteHumanResourceMutationResult = Apollo.MutationResult<DeleteHumanResourceMutation>;
+export type DeleteHumanResourceMutationOptions = Apollo.BaseMutationOptions<DeleteHumanResourceMutation, DeleteHumanResourceMutationVariables>;
+
+export type UpdateHumanResourceMutation = { __typename?: 'Mutation', updateHumanResource: { __typename?: 'ResponseMessageBase', message: string, success: boolean } };
+export const UpdateHumanResourceDocument = gql`
+    mutation UpdateHumanResource($input: UpdateHumanResourcesRequest!) {
+  updateHumanResource(input: $input) {
+    message
+    success
+  }
+}
+    `;
+export function useUpdateHumanResourceMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateHumanResourceMutation, UpdateHumanResourceMutationVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useMutation<UpdateHumanResourceMutation, UpdateHumanResourceMutationVariables>(UpdateHumanResourceDocument, options);
+}
+export type UpdateHumanResourceMutationHookResult = ReturnType<typeof useUpdateHumanResourceMutation>;
+export type UpdateHumanResourceMutationResult = Apollo.MutationResult<UpdateHumanResourceMutation>;
+export type UpdateHumanResourceMutationOptions = Apollo.BaseMutationOptions<UpdateHumanResourceMutation, UpdateHumanResourceMutationVariables>;
+
+export type GetHumanResourceByIdQueryVariables = Exact<{
+  getHumanResourceByIdId: Scalars['String']['input'];
+}>;
+
+
+export type GetHumanResourceByIdQuery = { __typename?: 'Query', getHumanResourceById: { __typename?: 'HumanResourceData', availableQuantity?: number | null, createdAt: any, description: string, hourlySalary: number, id: string, img?: string | null, name: string, quantity: number } };
+export const GetHumanResourceByIdDocument = gql`
+    query GetHumanResourceById($getHumanResourceByIdId: String!) {
+  getHumanResourceById(id: $getHumanResourceByIdId) {
+    availableQuantity
+    createdAt
+    description
+    hourlySalary
+    id
+    img
+    name
+    quantity
+  }
+}
+    `;
+export function useGetHumanResourceByIdQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetHumanResourceByIdQuery, GetHumanResourceByIdQueryVariables> & ({ variables: GetHumanResourceByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useQuery<GetHumanResourceByIdQuery, GetHumanResourceByIdQueryVariables>(GetHumanResourceByIdDocument, options);
+}
