@@ -2346,3 +2346,157 @@ export function useGetHumanResourceByIdQuery(baseOptions: ApolloReactHooks.Query
   const options = {...defaultOptions, ...baseOptions}
   return ApolloReactHooks.useQuery<GetHumanResourceByIdQuery, GetHumanResourceByIdQueryVariables>(GetHumanResourceByIdDocument, options);
 }
+
+export const DeleteLocationDocument = gql`
+    mutation DeleteLocation($deleteLocationId: String!) {
+  deleteLocation(id: $deleteLocationId) {
+    message
+    success
+  }
+}
+    `;
+export type DeleteLocationMutationVariables = Exact<{
+  deleteLocationId: Scalars['String']['input'];
+}>;
+
+
+export type DeleteLocationMutation = { __typename?: 'Mutation', deleteLocation: { __typename?: 'ResponseMessageBase', message: string, success: boolean } };
+
+export function useDeleteLocationMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteLocationMutation, DeleteLocationMutationVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useMutation<DeleteLocationMutation, DeleteLocationMutationVariables>(DeleteLocationDocument, options);
+}
+export type DeleteLocationMutationHookResult = ReturnType<typeof useDeleteLocationMutation>;
+export type DeleteLocationMutationResult = Apollo.MutationResult<DeleteLocationMutation>;
+export type DeleteLocationMutationOptions = Apollo.BaseMutationOptions<DeleteLocationMutation, DeleteLocationMutationVariables>;
+
+export type UpdateLocationRequest = {
+  address?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  hourlyRentalFee?: InputMaybe<Scalars['Float']['input']>;
+  id: Scalars['ID']['input'];
+  img?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+export const UpdateLocationDocument = gql`
+    mutation UpdateLocation($input: UpdateLocationRequest!) {
+  updateLocation(input: $input) {
+    message
+    success
+  }
+}
+    `;
+export type UpdateLocationMutationVariables = Exact<{
+  input: UpdateLocationRequest;
+}>;
+
+
+export type UpdateLocationMutation = { __typename?: 'Mutation', updateLocation: { __typename?: 'ResponseMessageBase', message: string, success: boolean } };
+
+export function useUpdateLocationMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateLocationMutation, UpdateLocationMutationVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useMutation<UpdateLocationMutation, UpdateLocationMutationVariables>(UpdateLocationDocument, options);
+}
+export type UpdateLocationMutationHookResult = ReturnType<typeof useUpdateLocationMutation>;
+export type UpdateLocationMutationResult = Apollo.MutationResult<UpdateLocationMutation>;
+export type UpdateLocationMutationOptions = Apollo.BaseMutationOptions<UpdateLocationMutation, UpdateLocationMutationVariables>;
+
+export const GetLocationsDocument = gql`
+    query GetLocations($input: QueryFilterDto!) {
+  getLocations(input: $input) {
+    items {
+      address
+      createdAt
+      description
+      hourlyRentalFee
+      id
+      img
+      name
+    }
+    meta {
+      currentPage
+      itemCount
+      itemsPerPage
+      totalItems
+      totalPages
+    }
+  }
+}
+    `;  
+export type GetLocationsQueryVariables = Exact<{
+  input: QueryFilterDto;
+}>;
+  export type GetLocationsQuery = { __typename?: 'Query', getLocations: { __typename?: 'LocationsData', items: Array<{ __typename?: 'LocationData', address: string, createdAt: any, description: string, hourlyRentalFee: number, id: string, img: string, name: string }>, meta: { __typename?: 'MetaPaginationInterface', currentPage: number, itemCount: number, itemsPerPage: number, totalItems: number, totalPages: number } } };    
+export function useGetLocationsQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetLocationsQuery, GetLocationsQueryVariables> & ({ variables: GetLocationsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useQuery<GetLocationsQuery, GetLocationsQueryVariables>(GetLocationsDocument, options);
+}
+
+export const GetLocationByIdDocument = gql`
+    query GetLocationById($getLocationByIdId: String!) {
+  getLocationById(id: $getLocationByIdId) {
+    address
+    createdAt
+    description
+    hourlyRentalFee
+    id
+    img
+    name
+  }
+}
+    `;
+export type GetLocationByIdQueryVariables = Exact<{
+   getLocationByIdId: Scalars['String']['input'];
+}>; 
+  export type GetLocationByIdQuery = { __typename?: 'Query', getLocationById: { __typename?: 'LocationData', address: string, createdAt: any, description: string, hourlyRentalFee: number, id: string, img: string, name: string } };
+export function useGetLocationByIdQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetLocationByIdQuery, GetLocationByIdQueryVariables> & ({ variables: GetLocationByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useQuery<GetLocationByIdQuery, GetLocationByIdQueryVariables>(GetLocationByIdDocument, options);
+}
+
+
+export enum UserStatus {
+  Active = 'ACTIVE',
+  Inactive = 'INACTIVE'
+}
+
+export type ActivateUserMutationVariables = Exact<{
+  activateUserId: Scalars['String']['input'];
+}>;
+
+
+export type ActivateUserMutation = { __typename?: 'Mutation', activateUser: { __typename?: 'ResponseMessageBase', message: string, success: boolean } };
+
+export const ActivateUserDocument = gql`
+    mutation ActivateUser($activateUserId: String!) {
+  activateUser(id: $activateUserId) {
+    message
+    success
+  }
+}
+   `;
+export function useActivateUserMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ActivateUserMutation, ActivateUserMutationVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useMutation<ActivateUserMutation, ActivateUserMutationVariables>(ActivateUserDocument, options);
+}
+
+
+export type DeactivateUserMutationVariables = Exact<{
+  deactivateUserId: Scalars['String']['input'];
+}>;
+
+
+export type DeactivateUserMutation = { __typename?: 'Mutation', deactivateUser: { __typename?: 'ResponseMessageBase', message: string, success: boolean } };
+
+export const DeactivateUserDocument = gql`
+    mutation DeactivateUser($deactivateUserId: String!) {
+  deactivateUser(id: $deactivateUserId) {
+    message
+    success
+  }
+}
+    `;
+export function useDeactivateUserMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeactivateUserMutation, DeactivateUserMutationVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useMutation<DeactivateUserMutation, DeactivateUserMutationVariables>(DeactivateUserDocument, options);
+}
