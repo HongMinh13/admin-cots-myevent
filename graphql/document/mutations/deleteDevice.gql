@@ -1,0 +1,6 @@
+mutation DeleteDevice($deleteDeviceId: String!) {
+  deleteDevice(id: $deleteDeviceId) {
+    message
+    success
+  }
+}

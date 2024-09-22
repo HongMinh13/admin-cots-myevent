@@ -1,0 +1,6 @@
+mutation UpdateLocation($input: UpdateLocationRequest!) {
+  updateLocation(input: $input) {
+    message
+    success
+  }
+}

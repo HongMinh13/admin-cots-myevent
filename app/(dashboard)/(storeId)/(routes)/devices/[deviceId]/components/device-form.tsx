@@ -78,6 +78,14 @@ export const DeviceForm: React.FC<DeviceFormProps> = ({
     try {
       setLoading(true);
       if (initialData) {
+		if (Number(data.quantity) < 0) {
+			toast.error('Số lượng không được nhỏ hơn 0');
+			return;
+		}
+		if (Number(data.hourlyRentalFee) < 0) {
+			toast.error('Đơn giá không được nhỏ hơn 0');
+			return;
+		}
         UpdateDevice({
           variables: {
             input: {
@@ -97,6 +105,14 @@ export const DeviceForm: React.FC<DeviceFormProps> = ({
         
         })
       } else {
+		if (Number(data.quantity) < 0) {
+			toast.error('Số lượng không được nhỏ hơn 0');
+			return;
+		}
+		if (Number(data.hourlyRentalFee) < 0) {
+			toast.error('Đơn giá không được nhỏ hơn 0');
+			return;
+		}
         CreateDevice({
           variables: {
             input: {

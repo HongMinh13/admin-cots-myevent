@@ -1,4 +1,4 @@
-import { BillboardForm } from "./components/billboard-form";
+import { BillboardForm } from "./components/user-form";
 
 const BillboardPage = async ({
   params

@@ -1,0 +1,21 @@
+query GetDevices($input: QueryFilterDto!) {
+  getDevices(input: $input) {
+    items {
+      availableQuantity
+      description
+      hourlyRentalFee
+      id
+      img
+      name
+      quantity
+      createdAt
+    }
+    meta {
+      currentPage
+      itemCount
+      itemsPerPage
+      totalItems
+      totalPages
+    }
+  }
+}

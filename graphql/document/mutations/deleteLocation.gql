@@ -1,0 +1,6 @@
+mutation DeleteLocation($deleteLocationId: String!) {
+  deleteLocation(id: $deleteLocationId) {
+    message
+    success
+  }
+}

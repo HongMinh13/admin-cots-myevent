@@ -1,0 +1,6 @@
+mutation UpdateHumanResource($input: UpdateHumanResourcesRequest!) {
+  updateHumanResource(input: $input) {
+    message
+    success
+  }
+}

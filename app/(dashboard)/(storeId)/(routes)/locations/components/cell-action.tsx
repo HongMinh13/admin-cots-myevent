@@ -15,11 +15,11 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { AlertModal } from "@/components/modals/alert-modal";
-
-import { CreditColumn } from "./columns";
+import { LocationData, useDeleteLocationMutation } from "@/graphql/generated";
+import { getToken } from "@/lib";
 
 interface CellActionProps {
-  data: CreditColumn;
+	data: LocationData;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({
@@ -30,24 +30,35 @@ export const CellAction: React.FC<CellActionProps> = ({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const [DeleteLocation, { loading: DeleteLocationLoading }] =
+    useDeleteLocationMutation();
+
   const onConfirm = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/sizes/${data.id}`);
-      toast.success('Size deleted.');
+      const res = await DeleteLocation({
+        variables: {
+          deleteLocationId: data.id
+        },   
+        context: {
+          headers: {
+            Authorization: getToken(),
+          },
+        },   
+      })
+      if (res.data?.deleteLocation.success === false) {
+        toast.error(res.data?.deleteLocation.message);
+        return;
+      }
+      toast.success('Xóa địa điểm thành công.');
       router.refresh();
     } catch (error) {
-      toast.error('Make sure you removed all products using this size first.');
+      toast.error('Có lỗi xảy ra khi xóa địa điểm');
     } finally {
       setOpen(false);
       setLoading(false);
     }
   };
-
-  const onCopy = (id: string) => {
-    navigator.clipboard.writeText(id);
-    toast.success('Size ID copied to clipboard.');
-  }
 
   return (
     <>
@@ -65,21 +76,16 @@ export const CellAction: React.FC<CellActionProps> = ({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuLabel>Hành động</DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={() => onCopy(data.id)}
+            onClick={() => router.push(`/locations/${data.id}`)}
           >
-            <Copy className="mr-2 h-4 w-4" /> Copy Id
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => router.push(`/sizes/${data.id}`)}
-          >
-            <Edit className="mr-2 h-4 w-4" /> Update
+            <Edit className="mr-2 h-4 w-4" /> Cập nhật
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => setOpen(true)}
           >
-            <Trash className="mr-2 h-4 w-4" /> Delete
+            <Trash className="mr-2 h-4 w-4" /> Xóa
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
