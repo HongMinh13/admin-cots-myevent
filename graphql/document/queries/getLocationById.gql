@@ -1,0 +1,11 @@
+query GetLocationById($getLocationByIdId: String!) {
+  getLocationById(id: $getLocationByIdId) {
+    address
+    createdAt
+    description
+    hourlyRentalFee
+    id
+    img
+    name
+  }
+}

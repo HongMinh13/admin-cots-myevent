@@ -1,0 +1,6 @@
+mutation DeleteHumanResource($deleteHumanResourceId: String!) {
+  deleteHumanResource(id: $deleteHumanResourceId) {
+    message
+    success
+  }
+}

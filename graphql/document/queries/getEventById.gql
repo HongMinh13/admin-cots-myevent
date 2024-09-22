@@ -2,6 +2,7 @@ query GetEventById($getEventByIdId: String!) {
   getEventById(id: $getEventByIdId) {
     createdAt
     description
+    detail
     eventFormat
     eventType {
       id
@@ -12,9 +13,54 @@ query GetEventById($getEventByIdId: String!) {
     isTemplate
     name
     rental {
+      customLocation
+      devices {
+        availableQuantity
+        createdAt
+        description
+        hourlyRentalFee
+        id
+        img
+        name
+        quantity
+      }
+      event {
+        createdAt
+        description
+        detail
+        eventFormat
+        id
+        img
+        isTemplate
+        name
+      }
+      humanResources {
+        availableQuantity
+        createdAt
+        description
+        hourlySalary
+        id
+        img
+        name
+        quantity
+      }
       id
+      locations {
+        address
+        createdAt
+        description
+        hourlyRentalFee
+        id
+        img
+        name
+      }
       rentalEndTime
       rentalStartTime
+      timelines {
+        description
+        id
+        startTime
+      }
       totalPrice
       user {
         avatar

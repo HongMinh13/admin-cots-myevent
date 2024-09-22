@@ -1,0 +1,6 @@
+mutation UpdateDevice($input: UpdateDeviceRequest!) {
+  updateDevice(input: $input) {
+    message
+    success
+  }
+}

@@ -116,6 +116,10 @@ export const LocationForm: React.FC<LocationFormProps> = ({ initialData }) => {
       const address = getAddressString();
       setLoading(true);
       if (initialData) {
+        if (Number(data.hourlyRentalFee) < 0) {
+          toast.error('Phí cho thuê không được nhỏ hơn 0');
+          return;
+        }
         UpdateLocation({
           variables: {
             input: {
@@ -134,6 +138,10 @@ export const LocationForm: React.FC<LocationFormProps> = ({ initialData }) => {
           },
         });
       } else {
+        if (Number(data.hourlyRentalFee) < 0) {
+          toast.error('Đơn giá không được nhỏ hơn 0');
+          return;
+        }
         CreateLocation({
           variables: {
             input: {

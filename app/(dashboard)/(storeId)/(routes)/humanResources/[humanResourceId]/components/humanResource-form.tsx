@@ -77,6 +77,14 @@ export const HumanResourceForm: React.FC<HumanResourceFormProps> = ({
     try {
       setLoading(true);
       if (initialData) {
+		if (Number(data.quantity) < 0) {
+			toast.error('Số lượng không được nhỏ hơn 0');
+			return;
+		}
+		if (Number(data.hourlySalary) < 0) {
+			toast.error('Đơn giá không được nhỏ hơn 0');
+			return;
+		}
         UpdateHumanResource({
           variables: {
             input: {
@@ -96,6 +104,14 @@ export const HumanResourceForm: React.FC<HumanResourceFormProps> = ({
         
         })
       } else {
+		if (Number(data.quantity) < 0) {
+			toast.error('Số lượng không được nhỏ hơn 0');
+			return;
+		}
+		if (Number(data.hourlySalary) < 0) {
+			toast.error('Đơn giá không được nhỏ hơn 0');
+			return;
+		}
         CreateHumanResource({
           variables: {
             input: {

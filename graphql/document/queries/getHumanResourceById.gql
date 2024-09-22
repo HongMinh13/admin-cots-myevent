@@ -1,0 +1,12 @@
+query GetHumanResourceById($getHumanResourceByIdId: String!) {
+  getHumanResourceById(id: $getHumanResourceByIdId) {
+    availableQuantity
+    createdAt
+    description
+    hourlySalary
+    id
+    img
+    name
+    quantity
+  }
+}

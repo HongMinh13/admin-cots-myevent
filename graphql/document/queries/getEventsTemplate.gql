@@ -1,5 +1,5 @@
-query GetEvents($input: GetEventsRequest!) {
-  getEvents(input: $input) {
+query GetEventsTemplate($input: QueryFilterDto!) {
+  getEventsTemplate(input: $input) {
     items {
       createdAt
       description

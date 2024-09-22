@@ -1,0 +1,21 @@
+query GetHumanResources($input: QueryFilterDto!) {
+  getHumanResources(input: $input) {
+    items {
+      availableQuantity
+      createdAt
+      description
+      hourlySalary
+      id
+      img
+      name
+      quantity
+    }
+    meta {
+      currentPage
+      itemCount
+      itemsPerPage
+      totalItems
+      totalPages
+    }
+  }
+}
