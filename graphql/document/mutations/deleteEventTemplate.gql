@@ -1,0 +1,6 @@
+mutation DeleteEventTemplate($deleteEventTemplateId: String!) {
+  deleteEventTemplate(id: $deleteEventTemplateId) {
+    message
+    success
+  }
+}

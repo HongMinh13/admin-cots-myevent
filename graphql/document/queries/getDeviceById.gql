@@ -1,0 +1,12 @@
+query GetDeviceById($getDeviceByIdId: String!) {
+  getDeviceById(id: $getDeviceByIdId) {
+    availableQuantity
+    createdAt
+    description
+    hourlyRentalFee
+    id
+    img
+    name
+    quantity
+  }
+}

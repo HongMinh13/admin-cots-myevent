@@ -3,42 +3,36 @@
 import { ColumnDef } from "@tanstack/react-table"
 
 import { CellAction } from "./cell-action"
+import { UserData } from "@/graphql/generated";
 
-export type UserColumn = {
-	id: string;
-  email: string;
-	username: string;
-	firstName: string;
-	lastName: string;
-	role: string;
-	state: string;
-	actions: string[];
-};
-
-export const columns: ColumnDef<UserColumn>[] = [
-	{
-		accessorKey: 'username',
-		header: 'Username',
-	},
+export const columns: ColumnDef<UserData>[] = [
 	{
 		accessorKey: 'email',
-		header: 'email',
+		header: 'Email',
 	},
 	{
 		accessorKey: 'firstName',
-		header: 'First Name',
+		header: 'Họ',
 	},
 	{
 		accessorKey: 'lastName',
-		header: 'Last Name',
+		header: 'Tên',
 	},
 	{
-		accessorKey: 'role',
-		header: 'Role',
+		accessorKey: 'role.name',
+		header: 'Quyền',
 	},
 	{
-		accessorKey: 'state',
-		header: 'State',
+		accessorKey: 'phoneNumber',
+		header: 'Số điện thoại',
+	},
+	{
+		accessorKey: 'status',
+		header: 'Trạng thái',
+	},
+	{
+		accessorKey: 'createdAt',
+		header: 'Ngày tạo',
 	},
 	{
 		id: 'actions',

@@ -76,6 +76,7 @@ export type CreateContractDetailsRequest = {
 };
 
 export type CreateDeviceRequest = {
+  description: Scalars['String']['input'];
   hourlyRentalFee: Scalars['Float']['input'];
   img: Scalars['String']['input'];
   name: Scalars['String']['input'];
@@ -84,6 +85,7 @@ export type CreateDeviceRequest = {
 
 export type CreateEventRequest = {
   description: Scalars['String']['input'];
+  detail: Scalars['String']['input'];
   eventFormat?: InputMaybe<Scalars['Boolean']['input']>;
   eventTypeId: Scalars['ID']['input'];
   img?: InputMaybe<Scalars['String']['input']>;
@@ -97,13 +99,16 @@ export type CreateEventTypeRequest = {
 };
 
 export type CreateHumanResourcesRequest = {
+  description: Scalars['String']['input'];
   hourlySalary: Scalars['Float']['input'];
+  img: Scalars['String']['input'];
   name: Scalars['String']['input'];
   quantity: Scalars['Float']['input'];
 };
 
 export type CreateLocationRequest = {
   address: Scalars['String']['input'];
+  description: Scalars['String']['input'];
   hourlyRentalFee: Scalars['Float']['input'];
   img: Scalars['String']['input'];
   name: Scalars['String']['input'];
@@ -123,6 +128,8 @@ export type DepositContractDto = {
 export type DeviceData = {
   __typename?: 'DeviceData';
   availableQuantity?: Maybe<Scalars['Float']['output']>;
+  createdAt: Scalars['DateTime']['output'];
+  description: Scalars['String']['output'];
   hourlyRentalFee: Scalars['Float']['output'];
   id: Scalars['ID']['output'];
   img: Scalars['String']['output'];
@@ -147,6 +154,7 @@ export type EventData = {
   __typename?: 'EventData';
   createdAt: Scalars['DateTime']['output'];
   description: Scalars['String']['output'];
+  detail: Scalars['String']['output'];
   eventFormat: Scalars['Boolean']['output'];
   eventType?: Maybe<EventTypeData>;
   id: Scalars['String']['output'];
@@ -172,6 +180,49 @@ export type EventsData = {
   __typename?: 'EventsData';
   items: Array<EventData>;
   meta: MetaPaginationInterface;
+};
+
+export type GetEventsRequest = {
+  eventTypeId?: InputMaybe<Scalars['String']['input']>;
+  /**
+   *
+   * - Filter equal: filters:[{field: "User.name", operator: eq, data: "Cam"}]
+   * - Filter not equal: filters:[{field: "User.name", operator: neq, data: "Cam"}]
+   * - Filter less than: filters:[{field: "User.age", operator: lt, data: 40}]
+   * - Filter greater than: filters:[{field: "User.age", operator: gt, data: 40}]
+   * - Filter less than and equal: filters:[{field: "User.age", operator: lte, data: 40}]
+   * - Filter greater than and equal: filters:[{field: "User.age", operator: gte, data: 40}]
+   * - Filter field in many choice: filters:[{field: "User.name", operator: in, data: "Cam,Camm"}]
+   * - Filter field not in many choice: filters:[{field: "User.name", operator: nin, data: "Cam,camm"}]
+   * - Filter field by text: filters:[{field: "User.name", operator: like, data: "Cam"}]
+   */
+  filters?: InputMaybe<Array<FilterDto>>;
+  /**
+   *
+   * - Paginate with limit and offset. Ex: limit:10, page:1
+   *
+   */
+  limit?: InputMaybe<Scalars['Float']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  /**
+   *
+   * - Order by fields and order reverse use prefix "ASC or DESC". Ex: orderBy: "User.createdAt:DESC"
+   * - Use NULLS_FIRST OR NULLS_LAST to determine where null value should be, Ex: orderBy: "User.createdAt:DESC:NULLS_FIRST"
+   *
+   */
+  orderBy?: InputMaybe<Scalars['String']['input']>;
+  /**
+   *
+   * - Paginate with limit and offset. Ex: limit:10, page:1
+   *
+   */
+  page?: Scalars['Float']['input'];
+  /**
+   *
+   * - Query by text. Ex: q:"abcxyz"
+   *
+   */
+  q?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type FilterDto = {
@@ -428,16 +479,21 @@ export type Mutation = {
   confirmContractDeposit: ContractData;
   createDevice: ResponseMessageBase;
   createEvent: ResponseMessageBase;
+  createEventTemplate: ResponseMessageBase;
   createEventType: ResponseMessageBase;
   createHumanResource: ResponseMessageBase;
   createLocation: ResponseMessageBase;
+  deactivateUser: ResponseMessageBase;
+  deleteDevice: ResponseMessageBase;
+  deleteEventTemplate: ResponseMessageBase;
   refreshToken: RefreshResponse;
   rentalServices: ResponseMessageBase;
   signIn: LoginResponse;
   signOut: ResponseMessageBase;
   signUp: ResponseMessageBase;
+  updateDevice: ResponseMessageBase;
+  updateEventTemplate: ResponseMessageBase;
   updateMe: IUser;
-  updateStatusContract: ContractData;
   uploadImage: Scalars['String']['output'];
   verifyCode: LoginResponse;
 };
@@ -539,15 +595,14 @@ export enum Query_Operator {
 
 export type Query = {
   __typename?: 'Query';
-  checkoutRemainBillingContract: CheckoutStripeResponse;
-  depositContract: CheckoutStripeResponse;
-  getContract: ContractData;
-  getContracts: ContractsData;
+  getDeviceById: DeviceData;
+  getDevices: DevicesData;
   getDevicesAvailable: DevicesData;
   getDevicesRental: Array<DeviceRentalData>;
   getEventById: EventData;
   getEventTypes: EventTypesData;
   getEvents: EventsData;
+  getEventsTemplate: EventsData;
   getHumanResourcesAvailable: HumanResourcesData;
   getHumanResourcesRental: Array<HumanResourceRentalData>;
   getLocationsAvailable: LocationsData;
@@ -556,6 +611,7 @@ export type Query = {
   getMyContracts: ContractsData;
   getRole: IRole;
   getRoles: IRoles;
+  testQuery: Scalars['String']['output'];
 };
 
 
@@ -757,13 +813,11 @@ export type UserData = {
   phoneNumber?: Maybe<Scalars['String']['output']>;
   role?: Maybe<RoleData>;
   roleId: Scalars['ID']['output'];
+  status?: Maybe<UserStatus>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
-export enum UserStatus {
-  Active = 'ACTIVE',
-  Inactive = 'INACTIVE'
-}
+
 
 export type UserUpdateInput = {
   avatar?: InputMaybe<Scalars['String']['input']>;
@@ -2341,6 +2395,7 @@ export type CreateEventTemplateMutation = {
   __typename?: "Mutation";
   createEventTemplate: { __typename?: "ResponseMessageBase"; message: string; success: boolean };
 };
+export type CreateEventTemplateMutationFn = Apollo.MutationFunction<CreateEventTemplateMutation, CreateEventTemplateMutationVariables>;
 export function useCreateEventTemplateMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<CreateEventTemplateMutation, CreateEventTemplateMutationVariables>
 ) {
@@ -2550,7 +2605,6 @@ export function useGetEventsTemplateQuery(baseOptions: ApolloReactHooks.QueryHoo
   const options = {...defaultOptions, ...baseOptions}
   return ApolloReactHooks.useQuery<GetEventsTemplateQuery, GetEventsTemplateQueryVariables>(GetEventsTemplateDocument, options);
 }
-
 export const GetUserStatisticByYearDocument = gql`
     query GetUserStatisticByYear($year: Float!) {
   getUserStatisticByYear(year: $year) {
@@ -2614,18 +2668,9 @@ export const GetUsersDocument = gql`
       roleId
       status
       updatedAt
+      }
     }
-    meta {
-      currentPage
-      itemCount
-      itemsPerPage
-      totalItems
-      totalPages
-    }
-  }
-}
-    `;
-
+  }`;    
 /**
  * __useGetUsersQuery__
  *
@@ -2658,3 +2703,439 @@ export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
 export type GetUsersLazyQueryHookResult = ReturnType<typeof useGetUsersLazyQuery>;
 export type GetUsersSuspenseQueryHookResult = ReturnType<typeof useGetUsersSuspenseQuery>;
 export type GetUsersQueryResult = Apollo.QueryResult<GetUsersQuery, GetUsersQueryVariables>;
+
+export const GetHumanResourcesDocument = gql`
+    query GetHumanResources($input: QueryFilterDto!) {
+  getHumanResources(input: $input) {
+    items {
+      availableQuantity
+      createdAt
+      description
+      hourlySalary
+      id
+      img
+      name
+      quantity
+    }
+    meta {
+      currentPage
+      itemCount
+      itemsPerPage
+      totalItems
+      totalPages
+    }
+  }
+}
+    `;
+export type GetHumanResourcesQueryVariables = Exact<{
+  input: QueryFilterDto;
+}>;
+export type GetHumanResourcesQuery = { __typename?: 'Query', getHumanResources: { __typename?: 'HumanResourcesData', items: Array<{ __typename?: 'HumanResourceData', availableQuantity?: number | null, createdAt: any, description: string, hourlySalary: number, id: string, img?: string | null, name: string, quantity: number }>, meta: { __typename?: 'MetaPaginationInterface', currentPage: number, itemCount: number, itemsPerPage: number, totalItems: number, totalPages: number } } };
+export function useGetHumanResourcesQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetHumanResourcesQuery, GetHumanResourcesQueryVariables> & ({ variables: GetHumanResourcesQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useQuery<GetHumanResourcesQuery, GetHumanResourcesQueryVariables>(GetHumanResourcesDocument, options);
+}
+export function useGetHumanResourcesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetHumanResourcesQuery, GetHumanResourcesQueryVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useLazyQuery<GetHumanResourcesQuery, GetHumanResourcesQueryVariables>(GetHumanResourcesDocument, options);
+}
+export function useGetHumanResourcesSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<GetHumanResourcesQuery, GetHumanResourcesQueryVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useSuspenseQuery<GetHumanResourcesQuery, GetHumanResourcesQueryVariables>(GetHumanResourcesDocument, options);
+}
+export type GetHumanResourcesQueryHookResult = ReturnType<typeof useGetHumanResourcesQuery>;
+export type GetHumanResourcesLazyQueryHookResult = ReturnType<typeof useGetHumanResourcesLazyQuery>;
+export type GetHumanResourcesSuspenseQueryHookResult = ReturnType<typeof useGetHumanResourcesSuspenseQuery>;
+export type GetHumanResourcesQueryResult = Apollo.QueryResult<GetHumanResourcesQuery, GetHumanResourcesQueryVariables>;
+
+export type UpsertTimelineRequest = {
+  description: Scalars['String']['input'];
+  id?: InputMaybe<Scalars['String']['input']>;
+  timeStart: Scalars['DateTime']['input'];
+};
+
+export type UpdateEventTemplateRequest = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  detail?: InputMaybe<Scalars['String']['input']>;
+  devices?: InputMaybe<Array<CreateServiceRentalRequest>>;
+  eventFormat?: InputMaybe<Scalars['Boolean']['input']>;
+  eventType?: InputMaybe<CreateEventTypeRequest>;
+  eventTypeId?: InputMaybe<Scalars['String']['input']>;
+  humanResources?: InputMaybe<Array<CreateServiceRentalRequest>>;
+  id: Scalars['ID']['input'];
+  img?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  timeline?: InputMaybe<Array<UpsertTimelineRequest>>;
+};
+export type UpdateEventTemplateMutationVariables = Exact<{
+  input: UpdateEventTemplateRequest;
+}>;
+export type UpdateHumanResourcesRequest = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  hourlySalary?: InputMaybe<Scalars['Float']['input']>;
+  id: Scalars['ID']['input'];
+  img?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  quantity?: InputMaybe<Scalars['Float']['input']>;
+};
+
+export type UpdateEventTemplateMutation = { __typename?: 'Mutation', updateEventTemplate: { __typename?: 'ResponseMessageBase', message: string, success: boolean } };
+
+export type UpdateHumanResourceMutationVariables = Exact<{
+  input: UpdateHumanResourcesRequest;
+}>;
+
+export const UpdateEventTemplateDocument = gql`
+    mutation UpdateEventTemplate($input: UpdateEventTemplateRequest!) {
+  updateEventTemplate(input: $input) {
+    message
+    success
+  }
+}
+    `;
+export function useUpdateEventTemplateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateEventTemplateMutation, UpdateEventTemplateMutationVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useMutation<UpdateEventTemplateMutation, UpdateEventTemplateMutationVariables>(UpdateEventTemplateDocument, options);
+}
+export type UpdateEventTemplateMutationHookResult = ReturnType<typeof useUpdateEventTemplateMutation>;
+export type UpdateEventTemplateMutationResult = Apollo.MutationResult<UpdateEventTemplateMutation>;
+export type UpdateEventTemplateMutationOptions = Apollo.BaseMutationOptions<UpdateEventTemplateMutation, UpdateEventTemplateMutationVariables>;
+
+export type DeleteDeviceMutationVariables = Exact<{
+  deleteDeviceId: Scalars['String']['input'];
+}>;
+
+
+export const DeleteDeviceDocument = gql`
+    mutation DeleteDevice($deleteDeviceId: String!) {
+  deleteDevice(id: $deleteDeviceId) {
+    message
+    success
+  }
+}
+    `;
+export type DeleteDeviceMutationFn = Apollo.MutationFunction<DeleteDeviceMutation, DeleteDeviceMutationVariables>;
+export type DeleteDeviceMutation = { __typename?: 'Mutation', deleteDevice: { __typename?: 'ResponseMessageBase', message: string, success: boolean } };
+
+export function useDeleteDeviceMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteDeviceMutation, DeleteDeviceMutationVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useMutation<DeleteDeviceMutation, DeleteDeviceMutationVariables>(DeleteDeviceDocument, options);
+}
+export type DeleteDeviceMutationHookResult = ReturnType<typeof useDeleteDeviceMutation>;
+export type DeleteDeviceMutationResult = Apollo.MutationResult<DeleteDeviceMutation>;
+export type DeleteDeviceMutationOptions = Apollo.BaseMutationOptions<DeleteDeviceMutation, DeleteDeviceMutationVariables>;
+
+
+export type GetDeviceByIdQueryVariables = Exact<{
+  getDeviceByIdId: Scalars['String']['input'];
+}>;
+
+export type GetDeviceByIdQuery = { __typename?: 'Query', getDeviceById: { __typename?: 'DeviceData', availableQuantity?: number | null, createdAt: any, description: string, hourlyRentalFee: number, id: string, img: string, name: string, quantity: number } };
+export const GetDeviceByIdDocument = gql`
+    query GetDeviceById($getDeviceByIdId: String!) {
+  getDeviceById(id: $getDeviceByIdId) {
+    availableQuantity
+    createdAt
+    description
+    hourlyRentalFee
+    id
+    img
+    name
+    quantity
+  }
+}
+    `;
+export function useGetDeviceByIdQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetDeviceByIdQuery, GetDeviceByIdQueryVariables> & ({ variables: GetDeviceByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useQuery<GetDeviceByIdQuery, GetDeviceByIdQueryVariables>(GetDeviceByIdDocument, options);
+}
+export function useGetDeviceByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetDeviceByIdQuery, GetDeviceByIdQueryVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useLazyQuery<GetDeviceByIdQuery, GetDeviceByIdQueryVariables>(GetDeviceByIdDocument, options);
+}
+export function useGetDeviceByIdSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<GetDeviceByIdQuery, GetDeviceByIdQueryVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useSuspenseQuery<GetDeviceByIdQuery, GetDeviceByIdQueryVariables>(GetDeviceByIdDocument, options);
+}
+export type GetDeviceByIdQueryHookResult = ReturnType<typeof useGetDeviceByIdQuery>;
+export type GetDeviceByIdLazyQueryHookResult = ReturnType<typeof useGetDeviceByIdLazyQuery>;
+export type GetDeviceByIdSuspenseQueryHookResult = ReturnType<typeof useGetDeviceByIdSuspenseQuery>;
+export type GetDeviceByIdQueryResult = Apollo.QueryResult<GetDeviceByIdQuery, GetDeviceByIdQueryVariables>;
+
+export type MutationUpdateDeviceArgs = {
+  input: UpdateDeviceRequest;
+};
+export type UpdateDeviceRequest = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  hourlyRentalFee?: InputMaybe<Scalars['Float']['input']>;
+  id: Scalars['ID']['input'];
+  img?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  quantity?: InputMaybe<Scalars['Float']['input']>;
+};
+export type UpdateDeviceMutationVariables = Exact<{
+  input: UpdateDeviceRequest;
+}>;
+
+export const UpdateDeviceDocument = gql`
+    mutation UpdateDevice($input: UpdateDeviceRequest!) {
+  updateDevice(input: $input) {
+    message
+    success
+  }
+}
+    `;
+export type UpdateDeviceMutationFn = Apollo.MutationFunction<UpdateDeviceMutation, UpdateDeviceMutationVariables>;
+export type UpdateDeviceMutation = { __typename?: 'Mutation', updateDevice: { __typename?: 'ResponseMessageBase', message: string, success: boolean } };
+
+export function useUpdateDeviceMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateDeviceMutation, UpdateDeviceMutationVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useMutation<UpdateDeviceMutation, UpdateDeviceMutationVariables>(UpdateDeviceDocument, options);
+}
+export type UpdateDeviceMutationHookResult = ReturnType<typeof useUpdateDeviceMutation>;
+export type UpdateDeviceMutationResult = Apollo.MutationResult<UpdateDeviceMutation>;
+export type UpdateDeviceMutationOptions = Apollo.BaseMutationOptions<UpdateDeviceMutation, UpdateDeviceMutationVariables>;
+
+export type DeleteHumanResourceMutationVariables = Exact<{
+  deleteHumanResourceId: Scalars['String']['input'];
+}>;
+
+
+export type DeleteHumanResourceMutation = { __typename?: 'Mutation', deleteHumanResource: { __typename?: 'ResponseMessageBase', message: string, success: boolean } };
+
+export const DeleteHumanResourceDocument = gql`
+    mutation DeleteHumanResource($deleteHumanResourceId: String!) {
+  deleteHumanResource(id: $deleteHumanResourceId) {
+    message
+    success
+  }
+}
+    `;
+export function useDeleteHumanResourceMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteHumanResourceMutation, DeleteHumanResourceMutationVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useMutation<DeleteHumanResourceMutation, DeleteHumanResourceMutationVariables>(DeleteHumanResourceDocument, options);
+}
+export type DeleteHumanResourceMutationHookResult = ReturnType<typeof useDeleteHumanResourceMutation>;
+export type DeleteHumanResourceMutationResult = Apollo.MutationResult<DeleteHumanResourceMutation>;
+export type DeleteHumanResourceMutationOptions = Apollo.BaseMutationOptions<DeleteHumanResourceMutation, DeleteHumanResourceMutationVariables>;
+
+export type UpdateHumanResourceMutation = { __typename?: 'Mutation', updateHumanResource: { __typename?: 'ResponseMessageBase', message: string, success: boolean } };
+export const UpdateHumanResourceDocument = gql`
+    mutation UpdateHumanResource($input: UpdateHumanResourcesRequest!) {
+  updateHumanResource(input: $input) {
+    message
+    success
+  }
+}
+    `;
+export type UpdateHumanResourceMutationFn = Apollo.MutationFunction<UpdateHumanResourceMutation, UpdateHumanResourceMutationVariables>;
+export function useUpdateHumanResourceMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateHumanResourceMutation, UpdateHumanResourceMutationVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useMutation<UpdateHumanResourceMutation, UpdateHumanResourceMutationVariables>(UpdateHumanResourceDocument, options);
+}
+export type UpdateHumanResourceMutationHookResult = ReturnType<typeof useUpdateHumanResourceMutation>;
+export type UpdateHumanResourceMutationResult = Apollo.MutationResult<UpdateHumanResourceMutation>;
+export type UpdateHumanResourceMutationOptions = Apollo.BaseMutationOptions<UpdateHumanResourceMutation, UpdateHumanResourceMutationVariables>;
+
+export type GetHumanResourceByIdQueryVariables = Exact<{
+  getHumanResourceByIdId: Scalars['String']['input'];
+}>;
+
+
+export type GetHumanResourceByIdQuery = { __typename?: 'Query', getHumanResourceById: { __typename?: 'HumanResourceData', availableQuantity?: number | null, createdAt: any, description: string, hourlySalary: number, id: string, img?: string | null, name: string, quantity: number } };
+export const GetHumanResourceByIdDocument = gql`
+    query GetHumanResourceById($getHumanResourceByIdId: String!) {
+  getHumanResourceById(id: $getHumanResourceByIdId) {
+    availableQuantity
+    createdAt
+    description
+    hourlySalary
+    id
+    img
+    name
+    quantity
+  }
+}
+    `;
+export function useGetHumanResourceByIdQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetHumanResourceByIdQuery, GetHumanResourceByIdQueryVariables> & ({ variables: GetHumanResourceByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useQuery<GetHumanResourceByIdQuery, GetHumanResourceByIdQueryVariables>(GetHumanResourceByIdDocument, options);
+}
+export function useGetHumanResourceByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetHumanResourceByIdQuery, GetHumanResourceByIdQueryVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useLazyQuery<GetHumanResourceByIdQuery, GetHumanResourceByIdQueryVariables>(GetHumanResourceByIdDocument, options);
+}
+export function useGetHumanResourceByIdSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<GetHumanResourceByIdQuery, GetHumanResourceByIdQueryVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useSuspenseQuery<GetHumanResourceByIdQuery, GetHumanResourceByIdQueryVariables>(GetHumanResourceByIdDocument, options);
+}
+export type GetHumanResourceByIdQueryHookResult = ReturnType<typeof useGetHumanResourceByIdQuery>;
+export type GetHumanResourceByIdLazyQueryHookResult = ReturnType<typeof useGetHumanResourceByIdLazyQuery>;
+export type GetHumanResourceByIdSuspenseQueryHookResult = ReturnType<typeof useGetHumanResourceByIdSuspenseQuery>;
+export type GetHumanResourceByIdQueryResult = Apollo.QueryResult<GetHumanResourceByIdQuery, GetHumanResourceByIdQueryVariables>;
+
+export const DeleteLocationDocument = gql`
+    mutation DeleteLocation($deleteLocationId: String!) {
+  deleteLocation(id: $deleteLocationId) {
+    message
+    success
+  }
+}
+    `;
+export type DeleteLocationMutationVariables = Exact<{
+  deleteLocationId: Scalars['String']['input'];
+}>;
+
+
+export type DeleteLocationMutation = { __typename?: 'Mutation', deleteLocation: { __typename?: 'ResponseMessageBase', message: string, success: boolean } };
+
+export function useDeleteLocationMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteLocationMutation, DeleteLocationMutationVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useMutation<DeleteLocationMutation, DeleteLocationMutationVariables>(DeleteLocationDocument, options);
+}
+export type DeleteLocationMutationHookResult = ReturnType<typeof useDeleteLocationMutation>;
+export type DeleteLocationMutationResult = Apollo.MutationResult<DeleteLocationMutation>;
+export type DeleteLocationMutationOptions = Apollo.BaseMutationOptions<DeleteLocationMutation, DeleteLocationMutationVariables>;
+
+export type UpdateLocationRequest = {
+  address?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  hourlyRentalFee?: InputMaybe<Scalars['Float']['input']>;
+  id: Scalars['ID']['input'];
+  img?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+export const UpdateLocationDocument = gql`
+    mutation UpdateLocation($input: UpdateLocationRequest!) {
+  updateLocation(input: $input) {
+    message
+    success
+  }
+}
+    `;
+export type UpdateLocationMutationFn = Apollo.MutationFunction<UpdateLocationMutation, UpdateLocationMutationVariables>;
+export type UpdateLocationMutationVariables = Exact<{
+  input: UpdateLocationRequest;
+}>;
+
+
+export type UpdateLocationMutation = { __typename?: 'Mutation', updateLocation: { __typename?: 'ResponseMessageBase', message: string, success: boolean } };
+
+export function useUpdateLocationMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateLocationMutation, UpdateLocationMutationVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useMutation<UpdateLocationMutation, UpdateLocationMutationVariables>(UpdateLocationDocument, options);
+}
+export type UpdateLocationMutationHookResult = ReturnType<typeof useUpdateLocationMutation>;
+export type UpdateLocationMutationResult = Apollo.MutationResult<UpdateLocationMutation>;
+export type UpdateLocationMutationOptions = Apollo.BaseMutationOptions<UpdateLocationMutation, UpdateLocationMutationVariables>;
+
+export const GetLocationsDocument = gql`
+    query GetLocations($input: QueryFilterDto!) {
+  getLocations(input: $input) {
+    items {
+      address
+      createdAt
+      description
+      hourlyRentalFee
+      id
+      img
+      name
+    }
+    meta {
+      currentPage
+      itemCount
+      itemsPerPage
+      totalItems
+      totalPages
+    }
+  }
+}
+    `;  
+export type GetLocationsQueryVariables = Exact<{
+  input: QueryFilterDto;
+}>;
+  export type GetLocationsQuery = { __typename?: 'Query', getLocations: { __typename?: 'LocationsData', items: Array<{ __typename?: 'LocationData', address: string, createdAt: any, description: string, hourlyRentalFee: number, id: string, img: string, name: string }>, meta: { __typename?: 'MetaPaginationInterface', currentPage: number, itemCount: number, itemsPerPage: number, totalItems: number, totalPages: number } } };    
+export function useGetLocationsQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetLocationsQuery, GetLocationsQueryVariables> & ({ variables: GetLocationsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useQuery<GetLocationsQuery, GetLocationsQueryVariables>(GetLocationsDocument, options);
+}
+
+export const GetLocationByIdDocument = gql`
+    query GetLocationById($getLocationByIdId: String!) {
+  getLocationById(id: $getLocationByIdId) {
+    address
+    createdAt
+    description
+    hourlyRentalFee
+    id
+    img
+    name
+  }
+}
+    `;
+export type GetLocationByIdQueryVariables = Exact<{
+   getLocationByIdId: Scalars['String']['input'];
+}>; 
+export type GetLocationByIdQuery = { __typename?: 'Query', getLocationById: { __typename?: 'LocationData', address: string, createdAt: any, description: string, hourlyRentalFee: number, id: string, img: string, name: string } };
+export function useGetLocationByIdQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetLocationByIdQuery, GetLocationByIdQueryVariables> & ({ variables: GetLocationByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useQuery<GetLocationByIdQuery, GetLocationByIdQueryVariables>(GetLocationByIdDocument, options);
+}
+export function useGetLocationByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLocationByIdQuery, GetLocationByIdQueryVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useLazyQuery<GetLocationByIdQuery, GetLocationByIdQueryVariables>(GetLocationByIdDocument, options);
+}
+export function useGetLocationByIdSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<GetLocationByIdQuery, GetLocationByIdQueryVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useSuspenseQuery<GetLocationByIdQuery, GetLocationByIdQueryVariables>(GetLocationByIdDocument, options);
+}
+export type GetLocationByIdQueryHookResult = ReturnType<typeof useGetLocationByIdQuery>;
+export type GetLocationByIdLazyQueryHookResult = ReturnType<typeof useGetLocationByIdLazyQuery>;
+export type GetLocationByIdSuspenseQueryHookResult = ReturnType<typeof useGetLocationByIdSuspenseQuery>;
+export type GetLocationByIdQueryResult = Apollo.QueryResult<GetLocationByIdQuery, GetLocationByIdQueryVariables>;
+
+export enum UserStatus {
+  Active = 'ACTIVE',
+  Inactive = 'INACTIVE'
+}
+
+export type ActivateUserMutationVariables = Exact<{
+  activateUserId: Scalars['String']['input'];
+}>;
+
+
+export type ActivateUserMutation = { __typename?: 'Mutation', activateUser: { __typename?: 'ResponseMessageBase', message: string, success: boolean } };
+
+export const ActivateUserDocument = gql`
+    mutation ActivateUser($activateUserId: String!) {
+  activateUser(id: $activateUserId) {
+    message
+    success
+  }
+}
+   `;
+export function useActivateUserMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ActivateUserMutation, ActivateUserMutationVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useMutation<ActivateUserMutation, ActivateUserMutationVariables>(ActivateUserDocument, options);
+}
+
+
+export type DeactivateUserMutationVariables = Exact<{
+  deactivateUserId: Scalars['String']['input'];
+}>;
+
+
+export type DeactivateUserMutation = { __typename?: 'Mutation', deactivateUser: { __typename?: 'ResponseMessageBase', message: string, success: boolean } };
+
+export const DeactivateUserDocument = gql`
+    mutation DeactivateUser($deactivateUserId: String!) {
+  deactivateUser(id: $deactivateUserId) {
+    message
+    success
+  }
+}
+    `;
+export function useDeactivateUserMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeactivateUserMutation, DeactivateUserMutationVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useMutation<DeactivateUserMutation, DeactivateUserMutationVariables>(DeactivateUserDocument, options);
+}

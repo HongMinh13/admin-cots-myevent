@@ -10,39 +10,39 @@ import { Separator } from "@/components/ui/separator";
 import { ApiList } from "@/components/ui/api-list";
 
 import { columns } from './columns';
-import { EventData } from "@/graphql/generated";
+import { LocationData } from "@/graphql/generated";
 
-interface EventsClientProps {
-	data: EventData[];
+interface LocationsClientProps {
+	data: LocationData[];
 	loading: boolean;
 }
 
-export const EventsClient: React.FC<EventsClientProps> = ({
+export const LocationsClient: React.FC<LocationsClientProps> = ({
   data,
   loading
 }) => {
   const params = useParams();
   const router = useRouter();
 
-	const events = data;
+	const locations = data;
 
 
   return (
 		<>
 			<div className="flex items-center justify-between">
 				<Heading
-					title={`Sự kiện (${events.length})`}
+					title={`Địa điểm (${locations.length})`}
 					description=""
 				/>
-				<Button onClick={() => router.push(`/event/new`)}>
+				<Button onClick={() => router.push(`/locations/new`)}>
 					<Plus className="mr-2 h-4 w-4" /> Thêm mới
 				</Button>
 			</div>
 			<Separator />
-			{ loading ? <Loader /> : <DataTable searchKey="description" columns={columns} data={events} />}
+			{ loading ? <Loader /> : <DataTable searchKey="description" columns={columns} data={locations} />}
 
 			<Separator />
-			<ApiList entityName="events" entityIdName="eventId" />
+			<ApiList entityName="locations" entityIdName="eventId" />
 		</>
 	);
 };

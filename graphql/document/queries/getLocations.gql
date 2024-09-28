@@ -1,0 +1,20 @@
+query GetLocations($input: QueryFilterDto!) {
+  getLocations(input: $input) {
+    items {
+      address
+      createdAt
+      description
+      hourlyRentalFee
+      id
+      img
+      name
+    }
+    meta {
+      currentPage
+      itemCount
+      itemsPerPage
+      totalItems
+      totalPages
+    }
+  }
+}

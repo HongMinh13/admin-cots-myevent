@@ -1,0 +1,6 @@
+mutation CreateEventTemplate($input: CreateEventTemplateRequest!) {
+  createEventTemplate(input: $input) {
+    message
+    success
+  }
+}
