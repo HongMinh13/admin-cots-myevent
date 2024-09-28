@@ -231,6 +231,61 @@ export type FilterDto = {
   operator: Query_Operator;
 };
 
+export type GetContractStatisticByMonth = {
+  __typename?: 'GetContractStatisticByMonth';
+  contract: Scalars['Float']['output'];
+  month: Scalars['Float']['output'];
+};
+
+export type GetContractStatisticByYear = {
+  __typename?: 'GetContractStatisticByYear';
+  result: Array<GetContractStatisticByMonth>;
+};
+
+export type GetContractsRequest = {
+  endTime?: InputMaybe<Scalars['DateTime']['input']>;
+  /**
+   *
+   * - Filter equal: filters:[{field: "User.name", operator: eq, data: "Cam"}]
+   * - Filter not equal: filters:[{field: "User.name", operator: neq, data: "Cam"}]
+   * - Filter less than: filters:[{field: "User.age", operator: lt, data: 40}]
+   * - Filter greater than: filters:[{field: "User.age", operator: gt, data: 40}]
+   * - Filter less than and equal: filters:[{field: "User.age", operator: lte, data: 40}]
+   * - Filter greater than and equal: filters:[{field: "User.age", operator: gte, data: 40}]
+   * - Filter field in many choice: filters:[{field: "User.name", operator: in, data: "Cam,Camm"}]
+   * - Filter field not in many choice: filters:[{field: "User.name", operator: nin, data: "Cam,camm"}]
+   * - Filter field by text: filters:[{field: "User.name", operator: like, data: "Cam"}]
+   */
+  filters?: InputMaybe<Array<FilterDto>>;
+  /**
+   *
+   * - Paginate with limit and offset. Ex: limit:10, page:1
+   *
+   */
+  limit?: InputMaybe<Scalars['Float']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  /**
+   *
+   * - Order by fields and order reverse use prefix "ASC or DESC". Ex: orderBy: "User.createdAt:DESC"
+   * - Use NULLS_FIRST OR NULLS_LAST to determine where null value should be, Ex: orderBy: "User.createdAt:DESC:NULLS_FIRST"
+   *
+   */
+  orderBy?: InputMaybe<Scalars['String']['input']>;
+  /**
+   *
+   * - Paginate with limit and offset. Ex: limit:10, page:1
+   *
+   */
+  page?: Scalars['Float']['input'];
+  /**
+   *
+   * - Query by text. Ex: q:"abcxyz"
+   *
+   */
+  q?: InputMaybe<Scalars['String']['input']>;
+  startTime?: InputMaybe<Scalars['DateTime']['input']>;
+  status?: InputMaybe<Contract_Status>;
+};
 export type GetServicesRequest = {
   endTime: Scalars['DateTime']['input'];
   /**
@@ -272,6 +327,61 @@ export type GetServicesRequest = {
    */
   q?: InputMaybe<Scalars['String']['input']>;
   startTime: Scalars['DateTime']['input'];
+};
+
+export type GetUserStatisticByMonth = {
+  __typename?: 'GetUserStatisticByMonth';
+  month: Scalars['Float']['output'];
+  user: Scalars['Float']['output'];
+};
+
+export type GetUserStatisticByYear = {
+  __typename?: 'GetUserStatisticByYear';
+  result: Array<GetUserStatisticByMonth>;
+};
+
+export type GetUsersRequest = {
+  /**
+   *
+   * - Filter equal: filters:[{field: "User.name", operator: eq, data: "Cam"}]
+   * - Filter not equal: filters:[{field: "User.name", operator: neq, data: "Cam"}]
+   * - Filter less than: filters:[{field: "User.age", operator: lt, data: 40}]
+   * - Filter greater than: filters:[{field: "User.age", operator: gt, data: 40}]
+   * - Filter less than and equal: filters:[{field: "User.age", operator: lte, data: 40}]
+   * - Filter greater than and equal: filters:[{field: "User.age", operator: gte, data: 40}]
+   * - Filter field in many choice: filters:[{field: "User.name", operator: in, data: "Cam,Camm"}]
+   * - Filter field not in many choice: filters:[{field: "User.name", operator: nin, data: "Cam,camm"}]
+   * - Filter field by text: filters:[{field: "User.name", operator: like, data: "Cam"}]
+   */
+  filters?: InputMaybe<Array<FilterDto>>;
+  /**
+   *
+   * - Paginate with limit and offset. Ex: limit:10, page:1
+   *
+   */
+  limit?: InputMaybe<Scalars['Float']['input']>;
+  /**
+   *
+   * - Order by fields and order reverse use prefix "ASC or DESC". Ex: orderBy: "User.createdAt:DESC"
+   * - Use NULLS_FIRST OR NULLS_LAST to determine where null value should be, Ex: orderBy: "User.createdAt:DESC:NULLS_FIRST"
+   *
+   */
+  orderBy?: InputMaybe<Scalars['String']['input']>;
+  /**
+   *
+   * - Paginate with limit and offset. Ex: limit:10, page:1
+   *
+   */
+  page?: Scalars['Float']['input'];
+  /**
+   *
+   * - Query by text. Ex: q:"abcxyz"
+   *
+   */
+  q?: InputMaybe<Scalars['String']['input']>;
+  role?: InputMaybe<Scalars['String']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<UserStatus>;
 };
 
 export type HumanResourceData = {
@@ -703,8 +813,11 @@ export type UserData = {
   phoneNumber?: Maybe<Scalars['String']['output']>;
   role?: Maybe<RoleData>;
   roleId: Scalars['ID']['output'];
+  status?: Maybe<UserStatus>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
+
+
 
 export type UserUpdateInput = {
   avatar?: InputMaybe<Scalars['String']['input']>;
@@ -804,6 +917,28 @@ export type VerifyCodeMutationVariables = Exact<{
 
 export type VerifyCodeMutation = { __typename?: 'Mutation', verifyCode: { __typename?: 'LoginResponse', token: string, refreshToken: string, id: string } };
 
+export type GetContractQueryVariables = Exact<{
+  getContractId: Scalars['String']['input'];
+}>;
+
+
+export type GetContractQuery = { __typename?: 'Query', getContract: { __typename?: 'ContractData', createdAt: any, id: string, name: string, singingDate?: any | null, status?: Contract_Status | null, updatedAt: any, customer?: { __typename?: 'CustomerData', address: string, id: string, name: string, phoneNumber: string } | null, rental: { __typename?: 'RentalData', customLocation?: string | null, id: string, rentalEndTime?: any | null, rentalStartTime?: any | null, totalPrice: number, devices?: Array<{ __typename?: 'DeviceData', availableQuantity?: number | null, createdAt: any, description: string, hourlyRentalFee: number, id: string, img: string, name: string, quantity: number }> | null, event?: { __typename?: 'EventData', createdAt: any, description: string, detail: string, eventFormat: boolean, id: string, img?: string | null, isTemplate: boolean, name: string, eventType?: { __typename?: 'EventTypeData', id: string, name: string } | null } | null, humanResources?: Array<{ __typename?: 'HumanResourceData', availableQuantity?: number | null, createdAt: any, description: string, hourlySalary: number, id: string, img?: string | null, name: string, quantity: number }> | null, locations?: Array<{ __typename?: 'LocationData', address: string, createdAt: any, description: string, hourlyRentalFee: number, id: string, img: string, name: string }> | null, user: { __typename?: 'UserData', avatar?: string | null, createdAt?: any | null, dob?: any | null, email: string, firstName: string, gender?: boolean | null, id: string, lastName: string, phoneNumber?: string | null, roleId: string, updatedAt?: any | null, role?: { __typename?: 'RoleData', id: string, name: string } | null } } } };
+
+export type GetContractStatisticByYearQueryVariables = Exact<{
+  year: Scalars['Float']['input'];
+}>;
+
+
+export type GetContractStatisticByYearQuery = { __typename?: 'Query', getContractStatisticByYear: { __typename?: 'GetContractStatisticByYear', result: Array<{ __typename?: 'GetContractStatisticByMonth', contract: number, month: number }> } };
+
+export type GetContractsQueryVariables = Exact<{
+  queryParams: GetContractsRequest;
+}>;
+
+
+export type GetContractsQuery = { __typename?: 'Query', getContracts: { __typename?: 'ContractsData', items: Array<{ __typename?: 'ContractData', createdAt: any, id: string, name: string, singingDate?: any | null, status?: Contract_Status | null, updatedAt: any, customer?: { __typename?: 'CustomerData', address: string, id: string, name: string, phoneNumber: string } | null, rental: { __typename?: 'RentalData', customLocation?: string | null, id: string, rentalEndTime?: any | null, rentalStartTime?: any | null, totalPrice: number, devices?: Array<{ __typename?: 'DeviceData', availableQuantity?: number | null, createdAt: any, description: string, hourlyRentalFee: number, id: string, img: string, name: string, quantity: number }> | null, event?: { __typename?: 'EventData', createdAt: any, description: string, detail: string, eventFormat: boolean, id: string, img?: string | null, isTemplate: boolean, name: string, eventType?: { __typename?: 'EventTypeData', id: string, name: string } | null } | null, humanResources?: Array<{ __typename?: 'HumanResourceData', availableQuantity?: number | null, createdAt: any, description: string, hourlySalary: number, id: string, img?: string | null, name: string, quantity: number }> | null, locations?: Array<{ __typename?: 'LocationData', address: string, createdAt: any, description: string, hourlyRentalFee: number, id: string, img: string, name: string }> | null, user: { __typename?: 'UserData', avatar?: string | null, createdAt?: any | null, dob?: any | null, email: string, firstName: string, gender?: boolean | null, id: string, lastName: string, phoneNumber?: string | null, roleId: string, updatedAt?: any | null, role?: { __typename?: 'RoleData', id: string, name: string } | null } } }>, meta: { __typename?: 'MetaPaginationInterface', currentPage: number, itemCount: number, itemsPerPage: number, totalItems: number, totalPages: number } } };
+
+
 export type GetDevicesAvailableQueryVariables = Exact<{
   input: GetServicesRequest;
 }>;
@@ -865,6 +1000,13 @@ export type GetMeQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetMeQuery = { __typename?: 'Query', getMe: { __typename?: 'IUser', avatar?: string | null, createdAt?: any | null, email: string, firstName: string, id: string, lastName: string, phoneNumber?: string | null, roleId: string, updatedAt?: any | null, role?: { __typename?: 'RoleData', id: string, name: string } | null } };
 
+export type GetRevenueStatisticByYearQueryVariables = Exact<{
+  year: Scalars['Float']['input'];
+}>;
+
+
+export type GetRevenueStatisticByYearQuery = { __typename?: 'Query', getRevenueStatisticByYear: { __typename?: 'GetRevenueStatisticByYear', result: Array<{ __typename?: 'GetRevenueStatisticByMonth', month: number, revenue: number }> } };
+
 export type GetRoleQueryVariables = Exact<{
   getRoleId: Scalars['ID']['input'];
 }>;
@@ -878,6 +1020,21 @@ export type GetRolesQueryVariables = Exact<{
 
 
 export type GetRolesQuery = { __typename?: 'Query', getRoles: { __typename?: 'IRoles', items: Array<{ __typename?: 'IRole', id: string, name: string }>, meta: { __typename?: 'MetaPaginationInterface', currentPage: number, itemCount: number, itemsPerPage: number, totalItems: number, totalPages: number } } };
+
+export type GetUserStatisticByYearQueryVariables = Exact<{
+  year: Scalars['Float']['input'];
+}>;
+
+
+export type GetUserStatisticByYearQuery = { __typename?: 'Query', getUserStatisticByYear: { __typename?: 'GetUserStatisticByYear', result: Array<{ __typename?: 'GetUserStatisticByMonth', month: number, user: number }> } };
+
+export type GetUsersQueryVariables = Exact<{
+  queryParams: GetUsersRequest;
+}>;
+
+
+export type GetUsersQuery = { __typename?: 'Query', getUsers: { __typename?: 'UsersData', items: Array<{ __typename?: 'UserData', avatar?: string | null, createdAt?: any | null, dob?: any | null, email: string, firstName: string, gender?: boolean | null, id: string, lastName: string, phoneNumber?: string | null, roleId: string, status?: UserStatus | null, updatedAt?: any | null, role?: { __typename?: 'RoleData', id: string, name: string } | null }>, meta: { __typename?: 'MetaPaginationInterface', currentPage: number, itemCount: number, itemsPerPage: number, totalItems: number, totalPages: number } } };
+
 
 export const MetaFragmentFragmentDoc = gql`
     fragment MetaFragment on MetaPaginationInterface {
@@ -1327,7 +1484,262 @@ export const GetDevicesAvailableDocument = gql`
   }
 }
     `;
+    export const GetContractDocument = gql`
+    query GetContract($getContractId: String!) {
+  getContract(id: $getContractId) {
+    createdAt
+    customer {
+      address
+      id
+      name
+      phoneNumber
+    }
+    id
+    name
+    rental {
+      customLocation
+      devices {
+        availableQuantity
+        createdAt
+        description
+        hourlyRentalFee
+        id
+        img
+        name
+        quantity
+      }
+      event {
+        createdAt
+        description
+        detail
+        eventFormat
+        eventType {
+          id
+          name
+        }
+        id
+        img
+        isTemplate
+        name
+      }
+      humanResources {
+        availableQuantity
+        createdAt
+        description
+        hourlySalary
+        id
+        img
+        name
+        quantity
+      }
+      id
+      locations {
+        address
+        createdAt
+        description
+        hourlyRentalFee
+        id
+        img
+        name
+      }
+      rentalEndTime
+      rentalStartTime
+      totalPrice
+      user {
+        avatar
+        createdAt
+        dob
+        email
+        firstName
+        gender
+        id
+        lastName
+        phoneNumber
+        role {
+          id
+          name
+        }
+        roleId
+        updatedAt
+      }
+    }
+    singingDate
+    status
+    updatedAt
+  }
+}
+    `;
 
+/**
+ * __useGetContractQuery__
+ *
+ * To run a query within a React component, call `useGetContractQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetContractQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetContractQuery({
+ *   variables: {
+ *      getContractId: // value for 'getContractId'
+ *   },
+ * });
+ */
+export function useGetContractQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetContractQuery, GetContractQueryVariables> & ({ variables: GetContractQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+      const options = {...defaultOptions, ...baseOptions}
+      return ApolloReactHooks.useQuery<GetContractQuery, GetContractQueryVariables>(GetContractDocument, options);
+    }
+export function useGetContractLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetContractQuery, GetContractQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useLazyQuery<GetContractQuery, GetContractQueryVariables>(GetContractDocument, options);
+      }
+export function useGetContractSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<GetContractQuery, GetContractQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useSuspenseQuery<GetContractQuery, GetContractQueryVariables>(GetContractDocument, options);
+      }
+export type GetContractQueryHookResult = ReturnType<typeof useGetContractQuery>;
+export type GetContractLazyQueryHookResult = ReturnType<typeof useGetContractLazyQuery>;
+export type GetContractSuspenseQueryHookResult = ReturnType<typeof useGetContractSuspenseQuery>;
+export type GetContractQueryResult = Apollo.QueryResult<GetContractQuery, GetContractQueryVariables>;
+export const GetContractStatisticByYearDocument = gql`
+  query GetContractStatisticByYear($year: Float!) {
+getContractStatisticByYear(year: $year) {
+  result {
+    contract
+    month
+  }
+}
+}
+  `;
+
+/**
+* __useGetContractStatisticByYearQuery__
+*
+* To run a query within a React component, call `useGetContractStatisticByYearQuery` and pass it any options that fit your needs.
+* When your component renders, `useGetContractStatisticByYearQuery` returns an object from Apollo Client that contains loading, error, and data properties
+* you can use to render your UI.
+*
+* @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+*
+* @example
+* const { data, loading, error } = useGetContractStatisticByYearQuery({
+*   variables: {
+*      year: // value for 'year'
+*   },
+* });
+*/
+
+export function useGetContractStatisticByYearQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetContractStatisticByYearQuery, GetContractStatisticByYearQueryVariables> & ({ variables: GetContractStatisticByYearQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+      const options = {...defaultOptions, ...baseOptions}
+      return ApolloReactHooks.useQuery<GetContractStatisticByYearQuery, GetContractStatisticByYearQueryVariables>(GetContractStatisticByYearDocument, options);
+    }
+export function useGetContractStatisticByYearLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetContractStatisticByYearQuery, GetContractStatisticByYearQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useLazyQuery<GetContractStatisticByYearQuery, GetContractStatisticByYearQueryVariables>(GetContractStatisticByYearDocument, options);
+      }
+export function useGetContractStatisticByYearSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<GetContractStatisticByYearQuery, GetContractStatisticByYearQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useSuspenseQuery<GetContractStatisticByYearQuery, GetContractStatisticByYearQueryVariables>(GetContractStatisticByYearDocument, options);
+      }
+export type GetContractStatisticByYearQueryHookResult = ReturnType<typeof useGetContractStatisticByYearQuery>;
+export type GetContractStatisticByYearLazyQueryHookResult = ReturnType<typeof useGetContractStatisticByYearLazyQuery>;
+export type GetContractStatisticByYearSuspenseQueryHookResult = ReturnType<typeof useGetContractStatisticByYearSuspenseQuery>;
+export type GetContractStatisticByYearQueryResult = Apollo.QueryResult<GetContractStatisticByYearQuery, GetContractStatisticByYearQueryVariables>;
+export const GetContractsDocument = gql`
+  query GetContracts($queryParams: GetContractsRequest!) {
+getContracts(queryParams: $queryParams) {
+  items {
+    createdAt
+    customer {
+      address
+      id
+      name
+      phoneNumber
+    }
+    id
+    name
+    rental {
+      customLocation
+      devices {
+        availableQuantity
+        createdAt
+        description
+        hourlyRentalFee
+        id
+        img
+        name
+        quantity
+      }
+      event {
+        createdAt
+        description
+        detail
+        eventFormat
+        eventType {
+          id
+          name
+        }
+        id
+        img
+        isTemplate
+        name
+      }
+      humanResources {
+        availableQuantity
+        createdAt
+        description
+        hourlySalary
+        id
+        img
+        name
+        quantity
+      }
+      id
+      locations {
+        address
+        createdAt
+        description
+        hourlyRentalFee
+        id
+        img
+        name
+      }
+      rentalEndTime
+      rentalStartTime
+      totalPrice
+      user {
+        avatar
+        createdAt
+        dob
+        email
+        firstName
+        gender
+        id
+        lastName
+        phoneNumber
+        role {
+          id
+          name
+        }
+        roleId
+        updatedAt
+      }
+    }
+    singingDate
+    status
+    updatedAt
+  }
+  meta {
+    currentPage
+    itemCount
+    itemsPerPage
+    totalItems
+    totalPages
+  }
+}
+}
+  `;   
 /**
  * __useGetDevicesAvailableQuery__
  *
@@ -1449,6 +1861,7 @@ export const GetEventByIdDocument = gql`
   }
 }
     `;
+
 
 /**
  * __useGetEventByIdQuery__
@@ -1815,6 +2228,50 @@ export type GetMeQueryHookResult = ReturnType<typeof useGetMeQuery>;
 export type GetMeLazyQueryHookResult = ReturnType<typeof useGetMeLazyQuery>;
 export type GetMeSuspenseQueryHookResult = ReturnType<typeof useGetMeSuspenseQuery>;
 export type GetMeQueryResult = Apollo.QueryResult<GetMeQuery, GetMeQueryVariables>;
+export const GetRevenueStatisticByYearDocument = gql`
+    query GetRevenueStatisticByYear($year: Float!) {
+  getRevenueStatisticByYear(year: $year) {
+    result {
+      month
+      revenue
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetRevenueStatisticByYearQuery__
+ *
+ * To run a query within a React component, call `useGetRevenueStatisticByYearQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRevenueStatisticByYearQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRevenueStatisticByYearQuery({
+ *   variables: {
+ *      year: // value for 'year'
+ *   },
+ * });
+ */
+export function useGetRevenueStatisticByYearQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetRevenueStatisticByYearQuery, GetRevenueStatisticByYearQueryVariables> & ({ variables: GetRevenueStatisticByYearQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+  const options = {...defaultOptions, ...baseOptions}
+  return ApolloReactHooks.useQuery<GetRevenueStatisticByYearQuery, GetRevenueStatisticByYearQueryVariables>(GetRevenueStatisticByYearDocument, options);
+}
+export function useGetRevenueStatisticByYearLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetRevenueStatisticByYearQuery, GetRevenueStatisticByYearQueryVariables>) {
+    const options = {...defaultOptions, ...baseOptions}
+    return ApolloReactHooks.useLazyQuery<GetRevenueStatisticByYearQuery, GetRevenueStatisticByYearQueryVariables>(GetRevenueStatisticByYearDocument, options);
+  }
+export function useGetRevenueStatisticByYearSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<GetRevenueStatisticByYearQuery, GetRevenueStatisticByYearQueryVariables>) {
+    const options = {...defaultOptions, ...baseOptions}
+    return ApolloReactHooks.useSuspenseQuery<GetRevenueStatisticByYearQuery, GetRevenueStatisticByYearQueryVariables>(GetRevenueStatisticByYearDocument, options);
+  }
+export type GetRevenueStatisticByYearQueryHookResult = ReturnType<typeof useGetRevenueStatisticByYearQuery>;
+export type GetRevenueStatisticByYearLazyQueryHookResult = ReturnType<typeof useGetRevenueStatisticByYearLazyQuery>;
+export type GetRevenueStatisticByYearSuspenseQueryHookResult = ReturnType<typeof useGetRevenueStatisticByYearSuspenseQuery>;
+export type GetRevenueStatisticByYearQueryResult = Apollo.QueryResult<GetRevenueStatisticByYearQuery, GetRevenueStatisticByYearQueryVariables>;
+
 export const GetRoleDocument = gql`
     query GetRole($getRoleId: ID!) {
   getRole(id: $getRoleId) {
@@ -2148,59 +2605,104 @@ export function useGetEventsTemplateQuery(baseOptions: ApolloReactHooks.QueryHoo
   const options = {...defaultOptions, ...baseOptions}
   return ApolloReactHooks.useQuery<GetEventsTemplateQuery, GetEventsTemplateQueryVariables>(GetEventsTemplateDocument, options);
 }
-export function useGetEventsTemplateLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetEventsTemplateQuery, GetEventsTemplateQueryVariables>) {
-  const options = {...defaultOptions, ...baseOptions}
-  return ApolloReactHooks.useLazyQuery<GetEventsTemplateQuery, GetEventsTemplateQueryVariables>(GetEventsTemplateDocument, options);
-}
-export function useGetEventsTemplateSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<GetEventsTemplateQuery, GetEventsTemplateQueryVariables>) {
-  const options = {...defaultOptions, ...baseOptions}
-  return ApolloReactHooks.useSuspenseQuery<GetEventsTemplateQuery, GetEventsTemplateQueryVariables>(GetEventsTemplateDocument, options);
-}
-export type GetEventsTemplateQueryHookResult = ReturnType<typeof useGetEventsTemplateQuery>;
-export type GetEventsTemplateLazyQueryHookResult = ReturnType<typeof useGetEventsTemplateLazyQuery>;
-export type GetEventsTemplateSuspenseQueryHookResult = ReturnType<typeof useGetEventsTemplateSuspenseQuery>;
-export type GetEventsTemplateQueryResult = Apollo.QueryResult<GetEventsTemplateQuery, GetEventsTemplateQueryVariables>;
-
-export const GetEventTypesDocument = gql`
-    query GetEventTypes($input: QueryFilterDto!) {
-  getEventTypes(input: $input) {
-    items {
-      id
-      name
-    }
-    meta {
-      currentPage
-      itemCount
-      itemsPerPage
-      totalItems
-      totalPages
+export const GetUserStatisticByYearDocument = gql`
+    query GetUserStatisticByYear($year: Float!) {
+  getUserStatisticByYear(year: $year) {
+    result {
+      month
+      user
     }
   }
 }
     `;
-export type GetEventTypesQueryVariables = Exact<{
-  input: QueryFilterDto;
-}>;
 
-
-export type GetEventTypesQuery = { __typename?: 'Query', getEventTypes: { __typename?: 'EventTypesData', items: Array<{ __typename?: 'EventTypeData', id: string, name: string }>, meta: { __typename?: 'MetaPaginationInterface', currentPage: number, itemCount: number, itemsPerPage: number, totalItems: number, totalPages: number } } };
-export function useGetEventTypesQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetEventTypesQuery, GetEventTypesQueryVariables> & ({ variables: GetEventTypesQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-  const options = {...defaultOptions, ...baseOptions}
-  return ApolloReactHooks.useQuery<GetEventTypesQuery, GetEventTypesQueryVariables>(GetEventTypesDocument, options);
-}
-export function useGetEventTypesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetEventTypesQuery, GetEventTypesQueryVariables>) {
-  const options = {...defaultOptions, ...baseOptions}
-  return ApolloReactHooks.useLazyQuery<GetEventTypesQuery, GetEventTypesQueryVariables>(GetEventTypesDocument, options);
-}
-export function useGetEventTypesSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<GetEventTypesQuery, GetEventTypesQueryVariables>) {
-  const options = {...defaultOptions, ...baseOptions}
-  return ApolloReactHooks.useSuspenseQuery<GetEventTypesQuery, GetEventTypesQueryVariables>(GetEventTypesDocument, options);
-}
-export type GetEventTypesQueryHookResult = ReturnType<typeof useGetEventTypesQuery>;
-export type GetEventTypesLazyQueryHookResult = ReturnType<typeof useGetEventTypesLazyQuery>;
-export type GetEventTypesSuspenseQueryHookResult = ReturnType<typeof useGetEventTypesSuspenseQuery>;
-export type GetEventTypesQueryResult = Apollo.QueryResult<GetEventTypesQuery, GetEventTypesQueryVariables>;
-
+/**
+ * __useGetUserStatisticByYearQuery__
+ *
+ * To run a query within a React component, call `useGetUserStatisticByYearQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserStatisticByYearQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserStatisticByYearQuery({
+ *   variables: {
+ *      year: // value for 'year'
+ *   },
+ * });
+ */
+export function useGetUserStatisticByYearQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetUserStatisticByYearQuery, GetUserStatisticByYearQueryVariables> & ({ variables: GetUserStatisticByYearQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<GetUserStatisticByYearQuery, GetUserStatisticByYearQueryVariables>(GetUserStatisticByYearDocument, options);
+      }
+export function useGetUserStatisticByYearLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetUserStatisticByYearQuery, GetUserStatisticByYearQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<GetUserStatisticByYearQuery, GetUserStatisticByYearQueryVariables>(GetUserStatisticByYearDocument, options);
+        }
+export function useGetUserStatisticByYearSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<GetUserStatisticByYearQuery, GetUserStatisticByYearQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<GetUserStatisticByYearQuery, GetUserStatisticByYearQueryVariables>(GetUserStatisticByYearDocument, options);
+        }
+export type GetUserStatisticByYearQueryHookResult = ReturnType<typeof useGetUserStatisticByYearQuery>;
+export type GetUserStatisticByYearLazyQueryHookResult = ReturnType<typeof useGetUserStatisticByYearLazyQuery>;
+export type GetUserStatisticByYearSuspenseQueryHookResult = ReturnType<typeof useGetUserStatisticByYearSuspenseQuery>;
+export type GetUserStatisticByYearQueryResult = Apollo.QueryResult<GetUserStatisticByYearQuery, GetUserStatisticByYearQueryVariables>;
+export const GetUsersDocument = gql`
+    query GetUsers($queryParams: GetUsersRequest!) {
+  getUsers(queryParams: $queryParams) {
+    items {
+      avatar
+      createdAt
+      dob
+      email
+      firstName
+      gender
+      id
+      lastName
+      phoneNumber
+      role {
+        id
+        name
+      }
+      roleId
+      status
+      updatedAt
+      }
+    }
+  }`;    
+/**
+ * __useGetUsersQuery__
+ *
+ * To run a query within a React component, call `useGetUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUsersQuery({
+ *   variables: {
+ *      queryParams: // value for 'queryParams'
+ *   },
+ * });
+ */
+export function useGetUsersQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetUsersQuery, GetUsersQueryVariables> & ({ variables: GetUsersQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
+      }
+export function useGetUsersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
+        }
+export function useGetUsersSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
+        }
+export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
+export type GetUsersLazyQueryHookResult = ReturnType<typeof useGetUsersLazyQuery>;
+export type GetUsersSuspenseQueryHookResult = ReturnType<typeof useGetUsersSuspenseQuery>;
+export type GetUsersQueryResult = Apollo.QueryResult<GetUsersQuery, GetUsersQueryVariables>;
 
 export const GetHumanResourcesDocument = gql`
     query GetHumanResources($input: QueryFilterDto!) {
