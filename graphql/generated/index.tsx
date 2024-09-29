@@ -53,9 +53,14 @@ export type ConfirmContractDeposit = {
 
 export type ContractData = {
   __typename?: 'ContractData';
+  createdAt: Scalars['DateTime']['output'];
+  customer?: Maybe<CustomerData>;
+  id: Scalars['String']['output'];
   name: Scalars['String']['output'];
   rental: RentalData;
-  singingDate: Scalars['DateTime']['output'];
+  singingDate?: Maybe<Scalars['DateTime']['output']>;
+  status?: Maybe<Contract_Status>;
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type ContractsData = {
@@ -383,6 +388,7 @@ export type Mutation = {
   signUp: ResponseMessageBase;
   updateDevice: ResponseMessageBase;
   updateEventTemplate: ResponseMessageBase;
+  updateStatusContract: ContractData;
   updateMe: IUser;
   uploadImage: Scalars['String']['output'];
   verifyCode: LoginResponse;
@@ -485,6 +491,10 @@ export enum Query_Operator {
 
 export type Query = {
   __typename?: 'Query';
+  getContracts: ContractsData;
+  checkoutRemainBillingContract: CheckoutStripeResponse;
+  depositContract: CheckoutStripeResponse;
+  getContract: ContractData;
   getDeviceById: DeviceData;
   getDevices: DevicesData;
   getDevicesAvailable: DevicesData;
@@ -521,7 +531,7 @@ export type QueryGetContractArgs = {
 
 
 export type QueryGetContractsArgs = {
-  queryParams: QueryFilterDto;
+  queryParams: GetContractsRequest;
 };
 
 
@@ -571,7 +581,7 @@ export type QueryGetLocationsRentalArgs = {
 
 
 export type QueryGetMyContractsArgs = {
-  queryParams: QueryFilterDto;
+  queryParams: GetContractsRequest;
 };
 
 
@@ -2637,3 +2647,465 @@ export function useDeactivateUserMutation(baseOptions?: ApolloReactHooks.Mutatio
   const options = {...defaultOptions, ...baseOptions}
   return ApolloReactHooks.useMutation<DeactivateUserMutation, DeactivateUserMutationVariables>(DeactivateUserDocument, options);
 }
+
+export type GetContractQueryVariables = Exact<{
+  getContractId: Scalars['String']['input'];
+}>;
+
+
+export type GetContractQuery = { __typename?: 'Query', getContract: { __typename?: 'ContractData', createdAt: any, id: string, name: string, singingDate?: any | null, status?: Contract_Status | null, updatedAt: any, customer?: { __typename?: 'CustomerData', address: string, id: string, name: string, phoneNumber: string } | null, rental: { __typename?: 'RentalData', customLocation?: string | null, id: string, rentalEndTime?: any | null, rentalStartTime?: any | null, totalPrice: number, devices?: Array<{ __typename?: 'DeviceData', availableQuantity?: number | null, createdAt: any, description: string, hourlyRentalFee: number, id: string, img: string, name: string, quantity: number }> | null, event?: { __typename?: 'EventData', createdAt: any, description: string, detail: string, eventFormat: boolean, id: string, img?: string | null, isTemplate: boolean, name: string, eventType?: { __typename?: 'EventTypeData', id: string, name: string } | null } | null, humanResources?: Array<{ __typename?: 'HumanResourceData', availableQuantity?: number | null, createdAt: any, description: string, hourlySalary: number, id: string, img?: string | null, name: string, quantity: number }> | null, locations?: Array<{ __typename?: 'LocationData', address: string, createdAt: any, description: string, hourlyRentalFee: number, id: string, img: string, name: string }> | null, user: { __typename?: 'UserData', avatar?: string | null, createdAt?: any | null, dob?: any | null, email: string, firstName: string, gender?: boolean | null, id: string, lastName: string, phoneNumber?: string | null, roleId: string, updatedAt?: any | null, role?: { __typename?: 'RoleData', id: string, name: string } | null } } } };
+export const GetContractDocument = gql`
+    query GetContract($getContractId: String!) {
+  getContract(id: $getContractId) {
+    createdAt
+    customer {
+      address
+      id
+      name
+      phoneNumber
+    }
+    id
+    name
+    rental {
+      customLocation
+      devices {
+        availableQuantity
+        createdAt
+        description
+        hourlyRentalFee
+        id
+        img
+        name
+        quantity
+      }
+      event {
+        createdAt
+        description
+        detail
+        eventFormat
+        eventType {
+          id
+          name
+        }
+        id
+        img
+        isTemplate
+        name
+      }
+      humanResources {
+        availableQuantity
+        createdAt
+        description
+        hourlySalary
+        id
+        img
+        name
+        quantity
+      }
+      id
+      locations {
+        address
+        createdAt
+        description
+        hourlyRentalFee
+        id
+        img
+        name
+      }
+      rentalEndTime
+      rentalStartTime
+      totalPrice
+      user {
+        avatar
+        createdAt
+        dob
+        email
+        firstName
+        gender
+        id
+        lastName
+        phoneNumber
+        role {
+          id
+          name
+        }
+        roleId
+        updatedAt
+      }
+    }
+    singingDate
+    status
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useGetContractQuery__
+ *
+ * To run a query within a React component, call `useGetContractQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetContractQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetContractQuery({
+ *   variables: {
+ *      getContractId: // value for 'getContractId'
+ *   },
+ * });
+ */
+export function useGetContractQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetContractQuery, GetContractQueryVariables> & ({ variables: GetContractQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<GetContractQuery, GetContractQueryVariables>(GetContractDocument, options);
+      }
+export function useGetContractLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetContractQuery, GetContractQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<GetContractQuery, GetContractQueryVariables>(GetContractDocument, options);
+        }
+export function useGetContractSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<GetContractQuery, GetContractQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<GetContractQuery, GetContractQueryVariables>(GetContractDocument, options);
+        }
+export type GetContractQueryHookResult = ReturnType<typeof useGetContractQuery>;
+export type GetContractLazyQueryHookResult = ReturnType<typeof useGetContractLazyQuery>;
+export type GetContractSuspenseQueryHookResult = ReturnType<typeof useGetContractSuspenseQuery>;
+export type GetContractQueryResult = Apollo.QueryResult<GetContractQuery, GetContractQueryVariables>;
+export const ConfirmContractDepositDocument = gql`
+    mutation ConfirmContractDeposit($input: ConfirmContractDeposit!) {
+  confirmContractDeposit(input: $input) {
+    createdAt
+    customer {
+      address
+      id
+      name
+      phoneNumber
+    }
+    id
+    name
+    rental {
+      customLocation
+      devices {
+        availableQuantity
+        createdAt
+        description
+        hourlyRentalFee
+        id
+        img
+        name
+        quantity
+      }
+      event {
+        createdAt
+        description
+        detail
+        eventFormat
+        eventType {
+          id
+          name
+        }
+        id
+        img
+        isTemplate
+        name
+      }
+      humanResources {
+        availableQuantity
+        createdAt
+        description
+        hourlySalary
+        id
+        img
+        name
+        quantity
+      }
+      id
+      locations {
+        address
+        createdAt
+        description
+        hourlyRentalFee
+        id
+        img
+        name
+      }
+      rentalEndTime
+      rentalStartTime
+      totalPrice
+      user {
+        avatar
+        createdAt
+        dob
+        email
+        firstName
+        gender
+        id
+        lastName
+        phoneNumber
+        role {
+          id
+          name
+        }
+        roleId
+        updatedAt
+      }
+    }
+    singingDate
+    status
+    updatedAt
+  }
+}
+    `;
+export type ConfirmContractDepositMutationFn = Apollo.MutationFunction<ConfirmContractDepositMutation, ConfirmContractDepositMutationVariables>;
+
+/**
+ * __useConfirmContractDepositMutation__
+ *
+ * To run a mutation, you first call `useConfirmContractDepositMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useConfirmContractDepositMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [confirmContractDepositMutation, { data, loading, error }] = useConfirmContractDepositMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useConfirmContractDepositMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ConfirmContractDepositMutation, ConfirmContractDepositMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<ConfirmContractDepositMutation, ConfirmContractDepositMutationVariables>(ConfirmContractDepositDocument, options);
+      }
+export type ConfirmContractDepositMutationHookResult = ReturnType<typeof useConfirmContractDepositMutation>;
+export type ConfirmContractDepositMutationResult = Apollo.MutationResult<ConfirmContractDepositMutation>;
+export type ConfirmContractDepositMutationOptions = Apollo.BaseMutationOptions<ConfirmContractDepositMutation, ConfirmContractDepositMutationVariables>;
+export type ConfirmContractDepositMutationVariables = Exact<{
+  input: ConfirmContractDeposit;
+}>;
+
+
+export type ConfirmContractDepositMutation = { __typename?: 'Mutation', confirmContractDeposit: { __typename?: 'ContractData', createdAt: any, id: string, name: string, singingDate?: any | null, status?: Contract_Status | null, updatedAt: any, customer?: { __typename?: 'CustomerData', address: string, id: string, name: string, phoneNumber: string } | null, rental: { __typename?: 'RentalData', customLocation?: string | null, id: string, rentalEndTime?: any | null, rentalStartTime?: any | null, totalPrice: number, devices?: Array<{ __typename?: 'DeviceData', availableQuantity?: number | null, createdAt: any, description: string, hourlyRentalFee: number, id: string, img: string, name: string, quantity: number }> | null, event?: { __typename?: 'EventData', createdAt: any, description: string, detail: string, eventFormat: boolean, id: string, img?: string | null, isTemplate: boolean, name: string, eventType?: { __typename?: 'EventTypeData', id: string, name: string } | null } | null, humanResources?: Array<{ __typename?: 'HumanResourceData', availableQuantity?: number | null, createdAt: any, description: string, hourlySalary: number, id: string, img?: string | null, name: string, quantity: number }> | null, locations?: Array<{ __typename?: 'LocationData', address: string, createdAt: any, description: string, hourlyRentalFee: number, id: string, img: string, name: string }> | null, user: { __typename?: 'UserData', avatar?: string | null, createdAt?: any | null, dob?: any | null, email: string, firstName: string, gender?: boolean | null, id: string, lastName: string, phoneNumber?: string | null, roleId: string, updatedAt?: any | null, role?: { __typename?: 'RoleData', id: string, name: string } | null } } } };
+
+export type GetContractsRequest = {
+  endTime?: InputMaybe<Scalars['DateTime']['input']>;
+  /**
+   *
+   * - Filter equal: filters:[{field: "User.name", operator: eq, data: "Cam"}]
+   * - Filter not equal: filters:[{field: "User.name", operator: neq, data: "Cam"}]
+   * - Filter less than: filters:[{field: "User.age", operator: lt, data: 40}]
+   * - Filter greater than: filters:[{field: "User.age", operator: gt, data: 40}]
+   * - Filter less than and equal: filters:[{field: "User.age", operator: lte, data: 40}]
+   * - Filter greater than and equal: filters:[{field: "User.age", operator: gte, data: 40}]
+   * - Filter field in many choice: filters:[{field: "User.name", operator: in, data: "Cam,Camm"}]
+   * - Filter field not in many choice: filters:[{field: "User.name", operator: nin, data: "Cam,camm"}]
+   * - Filter field by text: filters:[{field: "User.name", operator: like, data: "Cam"}]
+   */
+  filters?: InputMaybe<Array<FilterDto>>;
+  /**
+   *
+   * - Paginate with limit and offset. Ex: limit:10, page:1
+   *
+   */
+  limit?: InputMaybe<Scalars['Float']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  /**
+   *
+   * - Order by fields and order reverse use prefix "ASC or DESC". Ex: orderBy: "User.createdAt:DESC"
+   * - Use NULLS_FIRST OR NULLS_LAST to determine where null value should be, Ex: orderBy: "User.createdAt:DESC:NULLS_FIRST"
+   *
+   */
+  orderBy?: InputMaybe<Scalars['String']['input']>;
+  /**
+   *
+   * - Paginate with limit and offset. Ex: limit:10, page:1
+   *
+   */
+  page?: Scalars['Float']['input'];
+  /**
+   *
+   * - Query by text. Ex: q:"abcxyz"
+   *
+   */
+  q?: InputMaybe<Scalars['String']['input']>;
+  startTime?: InputMaybe<Scalars['DateTime']['input']>;
+  status?: InputMaybe<Contract_Status>;
+};
+
+export type GetEmailSendLogRequest = {
+  contractId: Scalars['ID']['input'];
+  /**
+   *
+   * - Filter equal: filters:[{field: "User.name", operator: eq, data: "Cam"}]
+   * - Filter not equal: filters:[{field: "User.name", operator: neq, data: "Cam"}]
+   * - Filter less than: filters:[{field: "User.age", operator: lt, data: 40}]
+   * - Filter greater than: filters:[{field: "User.age", operator: gt, data: 40}]
+   * - Filter less than and equal: filters:[{field: "User.age", operator: lte, data: 40}]
+   * - Filter greater than and equal: filters:[{field: "User.age", operator: gte, data: 40}]
+   * - Filter field in many choice: filters:[{field: "User.name", operator: in, data: "Cam,Camm"}]
+   * - Filter field not in many choice: filters:[{field: "User.name", operator: nin, data: "Cam,camm"}]
+   * - Filter field by text: filters:[{field: "User.name", operator: like, data: "Cam"}]
+   */
+  filters?: InputMaybe<Array<FilterDto>>;
+  /**
+   *
+   * - Paginate with limit and offset. Ex: limit:10, page:1
+   *
+   */
+  limit?: InputMaybe<Scalars['Float']['input']>;
+  /**
+   *
+   * - Order by fields and order reverse use prefix "ASC or DESC". Ex: orderBy: "User.createdAt:DESC"
+   * - Use NULLS_FIRST OR NULLS_LAST to determine where null value should be, Ex: orderBy: "User.createdAt:DESC:NULLS_FIRST"
+   *
+   */
+  orderBy?: InputMaybe<Scalars['String']['input']>;
+  /**
+   *
+   * - Paginate with limit and offset. Ex: limit:10, page:1
+   *
+   */
+  page?: Scalars['Float']['input'];
+  /**
+   *
+   * - Query by text. Ex: q:"abcxyz"
+   *
+   */
+  q?: InputMaybe<Scalars['String']['input']>;
+};
+export const GetContractsDocument = gql`
+    query GetContracts($queryParams: GetContractsRequest!) {
+  getContracts(queryParams: $queryParams) {
+    items {
+      createdAt
+      customer {
+        address
+        id
+        name
+        phoneNumber
+      }
+      id
+      name
+      rental {
+        customLocation
+        devices {
+          availableQuantity
+          createdAt
+          description
+          hourlyRentalFee
+          id
+          img
+          name
+          quantity
+        }
+        event {
+          createdAt
+          description
+          detail
+          eventFormat
+          eventType {
+            id
+            name
+          }
+          id
+          img
+          isTemplate
+          name
+        }
+        humanResources {
+          availableQuantity
+          createdAt
+          description
+          hourlySalary
+          id
+          img
+          name
+          quantity
+        }
+        id
+        locations {
+          address
+          createdAt
+          description
+          hourlyRentalFee
+          id
+          img
+          name
+        }
+        rentalEndTime
+        rentalStartTime
+        totalPrice
+        user {
+          avatar
+          createdAt
+          dob
+          email
+          firstName
+          gender
+          id
+          lastName
+          phoneNumber
+          role {
+            id
+            name
+          }
+          roleId
+          updatedAt
+        }
+      }
+      singingDate
+      status
+      updatedAt
+    }
+    meta {
+      currentPage
+      itemCount
+      itemsPerPage
+      totalItems
+      totalPages
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetContractsQuery__
+ *
+ * To run a query within a React component, call `useGetContractsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetContractsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetContractsQuery({
+ *   variables: {
+ *      queryParams: // value for 'queryParams'
+ *   },
+ * });
+ */
+export function useGetContractsQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetContractsQuery, GetContractsQueryVariables> & ({ variables: GetContractsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<GetContractsQuery, GetContractsQueryVariables>(GetContractsDocument, options);
+      }
+export function useGetContractsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetContractsQuery, GetContractsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<GetContractsQuery, GetContractsQueryVariables>(GetContractsDocument, options);
+        }
+export function useGetContractsSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<GetContractsQuery, GetContractsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<GetContractsQuery, GetContractsQueryVariables>(GetContractsDocument, options);
+        }
+export type GetContractsQueryHookResult = ReturnType<typeof useGetContractsQuery>;
+export type GetContractsLazyQueryHookResult = ReturnType<typeof useGetContractsLazyQuery>;
+export type GetContractsSuspenseQueryHookResult = ReturnType<typeof useGetContractsSuspenseQuery>;
+export type GetContractsQueryResult = Apollo.QueryResult<GetContractsQuery, GetContractsQueryVariables>;
+export type GetContractsQueryVariables = Exact<{
+  queryParams: GetContractsRequest;
+}>;
+
+
+export type GetContractsQuery = { __typename?: 'Query', getContracts: { __typename?: 'ContractsData', items: Array<{ __typename?: 'ContractData', createdAt: any, id: string, name: string, singingDate?: any | null, status?: Contract_Status | null, updatedAt: any, customer?: { __typename?: 'CustomerData', address: string, id: string, name: string, phoneNumber: string } | null, rental: { __typename?: 'RentalData', customLocation?: string | null, id: string, rentalEndTime?: any | null, rentalStartTime?: any | null, totalPrice: number, devices?: Array<{ __typename?: 'DeviceData', availableQuantity?: number | null, createdAt: any, description: string, hourlyRentalFee: number, id: string, img: string, name: string, quantity: number }> | null, event?: { __typename?: 'EventData', createdAt: any, description: string, detail: string, eventFormat: boolean, id: string, img?: string | null, isTemplate: boolean, name: string, eventType?: { __typename?: 'EventTypeData', id: string, name: string } | null } | null, humanResources?: Array<{ __typename?: 'HumanResourceData', availableQuantity?: number | null, createdAt: any, description: string, hourlySalary: number, id: string, img?: string | null, name: string, quantity: number }> | null, locations?: Array<{ __typename?: 'LocationData', address: string, createdAt: any, description: string, hourlyRentalFee: number, id: string, img: string, name: string }> | null, user: { __typename?: 'UserData', avatar?: string | null, createdAt?: any | null, dob?: any | null, email: string, firstName: string, gender?: boolean | null, id: string, lastName: string, phoneNumber?: string | null, roleId: string, updatedAt?: any | null, role?: { __typename?: 'RoleData', id: string, name: string } | null } } }>, meta: { __typename?: 'MetaPaginationInterface', currentPage: number, itemCount: number, itemsPerPage: number, totalItems: number, totalPages: number } } };
