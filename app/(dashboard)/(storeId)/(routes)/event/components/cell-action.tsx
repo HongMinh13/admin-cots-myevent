@@ -78,7 +78,7 @@ const onConfirm = async () => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Hành động</DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={() => router.push(`/events/${data.id}`)}
+            onClick={() => router.push(`/event/${data.id}`)}
           >
             <Edit className="mr-2 h-4 w-4" /> Cập nhật
           </DropdownMenuItem>

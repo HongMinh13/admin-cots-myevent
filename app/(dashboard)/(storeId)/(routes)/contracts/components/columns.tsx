@@ -1,6 +1,7 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
+import { format } from 'date-fns';
 
 import { CellAction } from "./cell-action"
 import { ContractData } from "@/graphql/generated";
@@ -25,14 +26,23 @@ export const columns: ColumnDef<ContractData>[] = [
 	{
 		accessorKey: 'rental.rentalStartTime',
 		header: 'Ngày thuê',
+		cell: ({ getValue }) => {
+			return format(new Date(getValue<string>()), 'yyyy-MM-dd');
+		},
 	},
 	{
 		accessorKey: 'rental.rentalEndTime',
 		header: 'Ngày trả',
+		cell: ({ getValue }) => {
+			return format(new Date(getValue<string>()), 'yyyy-MM-dd');
+		},
 	},
 	{
 		accessorKey: 'createdAt',
 		header: 'Ngày tạo',
+		cell: ({ getValue }) => {
+			return format(new Date(getValue<string>()), 'yyyy-MM-dd');
+		},
 	},
 	{
 		id: 'actions',

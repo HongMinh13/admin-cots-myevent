@@ -762,14 +762,24 @@ export type RefreshTokenDto = {
   refreshToken: Scalars['String']['input'];
 };
 
+export type TimelineData = {
+  __typename?: 'TimelineData';
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
+  startTime: Scalars['DateTime']['output'];
+};
+
 export type RentalData = {
   __typename?: 'RentalData';
+  customLocation?: Maybe<Scalars['String']['output']>;
   devices?: Maybe<Array<DeviceData>>;
+  event?: Maybe<EventData>;
   humanResources?: Maybe<Array<HumanResourceData>>;
   id: Scalars['String']['output'];
   locations?: Maybe<Array<LocationData>>;
-  rentalEndTime: Scalars['DateTime']['output'];
-  rentalStartTime: Scalars['DateTime']['output'];
+  rentalEndTime?: Maybe<Scalars['DateTime']['output']>;
+  rentalStartTime?: Maybe<Scalars['DateTime']['output']>;
+  timelines?: Maybe<Array<TimelineData>>;
   totalPrice: Scalars['Float']['output'];
   user: UserData;
 };
@@ -921,6 +931,13 @@ export type UpdateMeMutationVariables = Exact<{
 
 export type UpdateMeMutation = { __typename?: 'Mutation', updateMe: { __typename?: 'IUser', avatar?: string | null, email: string, firstName: string, lastName: string, id: string, phoneNumber?: string | null, role?: { __typename?: 'RoleData', name: string } | null } };
 
+export type UpdateStatusContractMutationVariables = Exact<{
+  input: UpdateContractStatusDto;
+}>;
+
+
+export type UpdateStatusContractMutation = { __typename?: 'Mutation', updateStatusContract: { __typename?: 'ContractData', createdAt: any, id: string, name: string, singingDate?: any | null, rental: { __typename?: 'RentalData', id: string, rentalEndTime?: any | null, rentalStartTime?: any | null, totalPrice: number, devices?: Array<{ __typename?: 'DeviceData', availableQuantity?: number | null, description: string, hourlyRentalFee: number, id: string, img: string, name: string, quantity: number }> | null, humanResources?: Array<{ __typename?: 'HumanResourceData', availableQuantity?: number | null, description: string, hourlySalary: number, id: string, name: string, quantity: number }> | null, locations?: Array<{ __typename?: 'LocationData', address: string, description: string, hourlyRentalFee: number, id: string, img: string, name: string }> | null, user: { __typename?: 'UserData', avatar?: string | null, createdAt?: any | null, dob?: any | null, email: string, firstName: string, gender?: boolean | null, id: string, lastName: string, phoneNumber?: string | null, roleId: string, updatedAt?: any | null, role?: { __typename?: 'RoleData', id: string, name: string } | null } } } };
+
 export type UploadImageMutationVariables = Exact<{
   input: UploadRequest;
 }>;
@@ -978,10 +995,9 @@ export type GetEventByIdQueryVariables = Exact<{
 
 export type GetEventByIdQuery = { __typename?: 'Query', getEventById: { __typename?: 'EventData', createdAt: any, description: string, eventFormat: boolean, id: string, img?: string | null, isTemplate: boolean, name: string, eventType?: { __typename?: 'EventTypeData', id: string, name: string } | null, rental?: { __typename?: 'RentalData', id: string, rentalEndTime: any, rentalStartTime: any, totalPrice: number, user: { __typename?: 'UserData', avatar?: string | null, createdAt?: any | null, dob?: any | null, email: string, firstName: string, gender?: boolean | null, id: string, lastName: string, phoneNumber?: string | null, roleId: string, updatedAt?: any | null, role?: { __typename?: 'RoleData', id: string, name: string } | null } } | null } };
 
-export type GetEventsQueryVariables = Exact<{
+export type GetEventTypesQueryVariables = Exact<{
   input: QueryFilterDto;
 }>;
-
 
 export type GetEventsQuery = { __typename?: 'Query', getEvents: { __typename?: 'EventsData', items: Array<{ __typename?: 'EventData', createdAt: any, description: string, eventFormat: boolean, id: string, img?: string | null, isTemplate: boolean, name: string, eventType?: { __typename?: 'EventTypeData', id: string, name: string } | null, rental?: { __typename?: 'RentalData', id: string, rentalEndTime: any, rentalStartTime: any, totalPrice: number, user: { __typename?: 'UserData', avatar?: string | null, createdAt?: any | null, dob?: any | null, email: string, firstName: string, gender?: boolean | null, id: string, lastName: string, phoneNumber?: string | null, roleId: string, updatedAt?: any | null, role?: { __typename?: 'RoleData', id: string, name: string } | null } } | null }>, meta: { __typename?: 'MetaPaginationInterface', currentPage: number, itemCount: number, itemsPerPage: number, totalItems: number, totalPages: number } } };
 
@@ -2575,6 +2591,9 @@ export type UpdateEventTemplateRequest = {
   name?: InputMaybe<Scalars['String']['input']>;
   timeline?: InputMaybe<Array<UpsertTimelineRequest>>;
 };
+export type MutationUpdateEventTemplateArgs = {
+  input: UpdateEventTemplateRequest;
+};
 export type UpdateEventTemplateMutationVariables = Exact<{
   input: UpdateEventTemplateRequest;
 }>;
@@ -3354,3 +3373,42 @@ export type GetContractsQueryHookResult = ReturnType<typeof useGetContractsQuery
 export type GetContractsLazyQueryHookResult = ReturnType<typeof useGetContractsLazyQuery>;
 export type GetContractsSuspenseQueryHookResult = ReturnType<typeof useGetContractsSuspenseQuery>;
 export type GetContractsQueryResult = Apollo.QueryResult<GetContractsQuery, GetContractsQueryVariables>;
+
+export type GetEventTypesQuery = { __typename?: 'Query', getEventTypes: { __typename?: 'EventTypesData', items: Array<{ __typename?: 'EventTypeData', id: string, name: string }>, meta: { __typename?: 'MetaPaginationInterface', currentPage: number, itemCount: number, itemsPerPage: number, totalItems: number, totalPages: number } } };
+
+export type GetEventsQueryVariables = Exact<{
+  input: GetEventsRequest;
+}>;
+export const GetEventTypesDocument = gql`
+    query GetEventTypes($input: QueryFilterDto!) {
+  getEventTypes(input: $input) {
+    items {
+      id
+      name
+    }
+    meta {
+      currentPage
+      itemCount
+      itemsPerPage
+      totalItems
+      totalPages
+    }
+  }
+}
+    `;
+    export function useGetEventTypesQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetEventTypesQuery, GetEventTypesQueryVariables> & ({ variables: GetEventTypesQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+      const options = {...defaultOptions, ...baseOptions}
+      return ApolloReactHooks.useQuery<GetEventTypesQuery, GetEventTypesQueryVariables>(GetEventTypesDocument, options);
+    }
+export function useGetEventTypesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetEventTypesQuery, GetEventTypesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useLazyQuery<GetEventTypesQuery, GetEventTypesQueryVariables>(GetEventTypesDocument, options);
+      }
+export function useGetEventTypesSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<GetEventTypesQuery, GetEventTypesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useSuspenseQuery<GetEventTypesQuery, GetEventTypesQueryVariables>(GetEventTypesDocument, options);
+      }
+export type GetEventTypesQueryHookResult = ReturnType<typeof useGetEventTypesQuery>;
+export type GetEventTypesLazyQueryHookResult = ReturnType<typeof useGetEventTypesLazyQuery>;
+export type GetEventTypesSuspenseQueryHookResult = ReturnType<typeof useGetEventTypesSuspenseQuery>;
+export type GetEventTypesQueryResult = Apollo.QueryResult<GetEventTypesQuery, GetEventTypesQueryVariables>;

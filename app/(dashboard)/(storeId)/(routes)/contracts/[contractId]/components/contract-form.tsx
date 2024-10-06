@@ -50,9 +50,9 @@ export const DeviceForm: React.FC<ContractFormProps> = ({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const title = initialData ? 'Cập nhật thiết bị' : 'Tạo mới thiết bị';
+  const title = initialData ? 'Cập nhật hợp đồng' : 'Tạo mới hợp đồng';
   const description = initialData ? '' : '';
-  const toastMessage = initialData ? 'Cập nhật thiết bị thành công.' : 'Tạo mới thiết bị thành công.';
+  const toastMessage = initialData ? 'Cập nhật hợp đồng thành công.' : 'Tạo mới hợp đồng thành công.';
   const action = initialData ? 'Lưu' : 'Tạo';
 
   const form = useForm<DeviceFormValues>({

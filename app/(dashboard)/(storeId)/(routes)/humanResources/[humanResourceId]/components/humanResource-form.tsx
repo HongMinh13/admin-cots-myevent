@@ -161,6 +161,7 @@ export const HumanResourceForm: React.FC<HumanResourceFormProps> = ({
 		}
 		  toast.success('Xóa nhân sự thành công.');
 		  router.refresh();
+		  router.push(`/humanResources`);
 		} catch (error) {
 		  toast.error('Có lỗi xảy ra khi xóa nhân sự.');
 		} finally {

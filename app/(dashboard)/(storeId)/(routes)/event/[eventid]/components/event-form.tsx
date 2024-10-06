@@ -104,9 +104,7 @@ export const EventForm: React.FC<EventFormProps> = ({ initialData }) => {
 
   const title = initialData ? "Cập nhật sự kiện" : "Tạo mới sự kiện";
   const description = initialData ? "" : "";
-  const toastMessage = initialData
-    ? "Cập nhật sự kiện thành công."
-    : "Tạo mới sự kiện thành công.";
+  const toastMessage = initialData ? "Cập nhật sự kiện thành công." : "Tạo mới sự kiện thành công.";
   const action = initialData ? "Lưu" : "Tạo";
 
   const formattedInitialData = {
@@ -215,7 +213,7 @@ export const EventForm: React.FC<EventFormProps> = ({ initialData }) => {
         });
       }
       router.refresh();
-      router.push(`/events`);
+      router.push(`/event`);
       toast.success(toastMessage);
     } catch (error: any) {
       toast.error("Có lỗi xảy ra!");
@@ -246,6 +244,7 @@ export const EventForm: React.FC<EventFormProps> = ({ initialData }) => {
     }
       toast.success('Xóa sự kiện thành công.');
       router.refresh();
+      router.push(`/event`);
     } catch (error) {
       toast.error('Có lỗi xảy ra khi xóa sự kiện.');
     } finally {
