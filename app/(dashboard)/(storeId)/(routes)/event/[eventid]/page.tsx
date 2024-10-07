@@ -4,14 +4,18 @@ import { useGetEventByIdQuery } from '@/graphql/generated';
 import { getToken } from '@/lib';
 import toast from 'react-hot-toast';
 import { EventForm } from './components/event-form';
+import { usePathname } from 'next/navigation';
 
-const EventPage = ({ params }: { params?: { eventId: string } }) => {
-	const shouldFetchEvent = params?.eventId && params.eventId !== 'new';
+const EventPage = () => {
+	const pathname = usePathname()
+	const eventId = pathname.split('/')?.[2];
+	console.log(pathname)
+	const shouldFetchEvent = eventId && eventId !== 'new';
 	const { data: event, loading } = useGetEventByIdQuery({
 		skip: !shouldFetchEvent,
 		fetchPolicy: 'network-only',
 		variables: {
-			getEventByIdId: params?.eventId || '',
+			getEventByIdId: eventId || '',
 		},
 		context: {
 			headers: {

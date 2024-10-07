@@ -26,7 +26,7 @@ const ContractPage = ({ params }: { params?: { contractId: string } }) => {
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        {/* {!loading && <DeviceForm initialData={device?.getDeviceById ?? null} />} */}
+        {!loading && <DeviceForm initialData={contract?.getContract ?? null} />}
       </div>
     </div>
   );

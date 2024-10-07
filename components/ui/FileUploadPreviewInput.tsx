@@ -1,12 +1,20 @@
 import { uploadFile } from "@/lib";
 import { useState } from "react";
 import { Input } from "./input";
+import useUploadFile from "@/hooks/use-upload-file";
 
 interface FileUploadIInputProps {
   onFieldChange: (event: { target: { value: string } }) => void;
   value?: string
   className?: string
 }
+const toBase64 = (file: Blob) =>
+	new Promise((resolve, reject) => {
+		const reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onload = () => resolve(reader.result);
+		reader.onerror = reject;
+	});
 function FileUploadInput({
   onFieldChange,
   value,
@@ -14,22 +22,31 @@ function FileUploadInput({
 }: FileUploadIInputProps) {
   const [previewUrl, setPreviewUrl] = useState<string| undefined>(value);
   const [loading, setLoading] = useState(false);
+  const { uploadImage } = useUploadFile();
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(value)
     const selectedFile = event?.target?.files?.[0];
     if (selectedFile) {
       setLoading(true);
-      await uploadFile(selectedFile, (url: string) => {
-        setPreviewUrl(url);
-        onFieldChange?.({
-          target: {
-            value: url
-          }
-        })
+      const image: string = (await toBase64(selectedFile as Blob)) as string;
 
-        setLoading(false);
-      });
+      const { data } = await uploadImage({
+				input: {
+					file: image,
+					folder: 'avatar',
+				},
+			});
+
+			const url = data?.uploadImage;
+      setPreviewUrl(url);
+      console.log(url)
+			onFieldChange?.({
+				target: {
+					value: url as string,
+				},
+			});
+
+			setLoading(false);
     }
   };
 
